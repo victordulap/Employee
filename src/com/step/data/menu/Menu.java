@@ -1,19 +1,11 @@
 package com.step.data.menu;
 
-import com.step.data.employee.Employee;
 import com.step.data.employee.EmployeeDataManager;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class Menu{
     private static Scanner sc = new Scanner(System.in);
-
-//    private static Employee[] employees = new Employee[100];
-//    private static int employeesCount = 0;
-    private static List<Employee> employees = new ArrayList<>();
-
 
     public static void showMenu() {
         int nav = -1;
@@ -41,16 +33,16 @@ public class Menu{
 
             switch (nav) {
                 case 1:
-                    EmployeeDataManager.view(employees);
+                    EmployeeDataManager.view();
                     break;
                 case 2:
-                    EmployeeDataManager.insert(employees);
+                    EmployeeDataManager.insert();
                     break;
                 case 3:
-                    EmployeeDataManager.update(employees);
+//                    EmployeeDataManager.update();
                     break;
                 case 4:
-                    EmployeeDataManager.delete(employees);
+                    EmployeeDataManager.delete();
                     break;
                 case 0:
                     System.exit(0);

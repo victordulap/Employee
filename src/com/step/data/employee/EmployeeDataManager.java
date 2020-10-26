@@ -2,11 +2,17 @@ package com.step.data.employee;
 
 import com.step.data.menu.ScreenUtilities;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class EmployeeDataManager {
     private static final Scanner sc = new Scanner(System.in);
+
+    //    private static Employee[] employees = new Employee[100];
+    //    private static int employeesCount = 0;
+    private static List<Employee> employees = new ArrayList<>();
 
     private static String firstLetterUpperCase(String str) {
         str = str.toLowerCase();
@@ -15,43 +21,85 @@ public class EmployeeDataManager {
         return str;
     }
 
-    public static void insert(List<Employee> employees) {
+    private static LocalDate enterBirthDate() {
+        LocalDate birthDate;
+        do {
+            int year = 0, month = 0, day = 0;
+            System.out.println("Entering birth date...");
+            try {
+                System.out.print("\tyear: ");
+                year = sc.nextInt();
+                System.out.print("\tmonth: ");
+                month = sc.nextInt();
+                System.out.print("\tday: ");
+                day = sc.nextInt();
+
+                try {
+                    birthDate = LocalDate.of(year, month, day);
+                    break;
+                } catch (Exception e) {
+                    System.out.println("Invalid date. please try again (ex: 2001-1-1 (yyyy/M/d))");
+                    ScreenUtilities.enterAnyValueToContinue();
+                }
+            } catch (Exception e) {
+                System.out.println("Invalid format, please try again... (don't use any characters other than integers)");
+            }
+            finally {
+                sc.nextLine();
+            }
+        } while (true);
+
+        return birthDate;
+    }
+
+    private static double enterSalary() {
+        double salary;
+
+        do {
+            System.out.print("Enter salary: ");
+            try {
+                salary = sc.nextDouble();
+                break;
+            } catch (Exception e) {
+                System.out.println("Invalid salary format, try again (ex: 9999.9)");
+            } finally {
+                // reset scanner's line so it work properly,
+                // it doesn't reset on any scanner nextXxx() methods other than nextLine()
+                sc.nextLine();
+            }
+        } while (true);
+
+        return salary;
+    }
+
+    public static void insert() {
         String moreEmployees = "false";
 
         do {
             ScreenUtilities.clearScreen();
 
             System.out.println("INSERTING NEW EMPLOYEE...");
+
             System.out.print("Enter name: ");
             String name = sc.nextLine();
             name = name.trim();
             name = firstLetterUpperCase(name);
+
             System.out.print("Enter surname: ");
             String surname = sc.nextLine();
             surname = surname.trim();
             surname = firstLetterUpperCase(surname);
+
             System.out.print("Enter idnp: ");
             String idnp = sc.nextLine();
             idnp = idnp.trim();
-            System.out.print("Enter birth date: ");
-            String birthDate = sc.nextLine();
-            birthDate = birthDate.trim();
-            double salary;
-            do {
-                System.out.print("Enter salary: ");
-                try {
-                    salary = sc.nextDouble();
-                    break;
-                } catch (Exception e) {
-                    System.out.println("Invalid salary format, try again (ex: 9999.9)");
-                } finally {
-                    // reset scanner's line so it work properly,
-                    // it doesn't reset on any scanner nextXxx() methods other than nextLine()
-                    sc.nextLine();
-                }
-            } while (true);
 
-            int id = employees.size() + 1;
+            LocalDate birthDate = enterBirthDate();
+
+            double salary = enterSalary();
+
+
+            int id = employees.size();
             employees.add(new Employee(id, name, surname, idnp, birthDate, salary));
 
             ScreenUtilities.clearScreen();
@@ -71,7 +119,7 @@ public class EmployeeDataManager {
 
     }
 
-    public static void view(List<Employee> employees) {
+    public static void view() {
         ScreenUtilities.clearScreen();
 
 //        int employeesPerPage = 2;
@@ -97,7 +145,7 @@ public class EmployeeDataManager {
     }
 
     //delete
-    private static void deleteByIdnp(List<Employee> employees) {
+    private static void deleteByIdnp() {
         ScreenUtilities.clearScreen();
 
         System.out.print("Enter employee's idnp: ");
@@ -128,7 +176,7 @@ public class EmployeeDataManager {
         ScreenUtilities.enterAnyValueToContinue();
     }
 
-    private static void deleteById(List<Employee> employees) {
+    private static void deleteById() {
         ScreenUtilities.clearScreen();
 
         int id;
@@ -168,7 +216,7 @@ public class EmployeeDataManager {
         ScreenUtilities.enterAnyValueToContinue();
     }
 
-    private static void deleteByName(List<Employee> employees) {
+    private static void deleteByName() {
         ScreenUtilities.clearScreen();
 
         System.out.print("Enter employee's name: ");
@@ -209,7 +257,7 @@ public class EmployeeDataManager {
         ScreenUtilities.enterAnyValueToContinue();
     }
 
-    public static void delete(List<Employee> employees) {
+    public static void delete() {
         //submenu
         int nav = -1;
         do {
@@ -235,13 +283,13 @@ public class EmployeeDataManager {
 
             switch (nav) {
                 case 1:
-                    EmployeeDataManager.deleteByIdnp(employees);
+                    EmployeeDataManager.deleteByIdnp();
                     break;
                 case 2:
-                    EmployeeDataManager.deleteById(employees);
+                    EmployeeDataManager.deleteById();
                     break;
                 case 3:
-                    EmployeeDataManager.deleteByName(employees);
+                    EmployeeDataManager.deleteByName();
                     break;
                 case 0:
                     return;
@@ -257,7 +305,43 @@ public class EmployeeDataManager {
     //end delete
 
     //update
-    private static void updateByIdnp(List<Employee> employees) {
+    private static Employee updateStatement(int employeeIndex) {
+        System.out.println("Editing employee " + employees.get(employeeIndex).getName()
+                + " " + employees.get(employeeIndex).getSurname() + " (id: "
+                + employees.get(employeeIndex).getId() + " / idnp: "
+                + employees.get(employeeIndex).getIdnp() + ")...");
+        //name
+        System.out.print("name: " + employees.get(employeeIndex).getName() + " -> ");
+        String name = sc.nextLine();
+        name = name.trim();
+        name = firstLetterUpperCase(name);
+        //end name
+
+        //surname
+        System.out.print("surname: " + employees.get(employeeIndex).getSurname() + " -> ");
+        String surname = sc.nextLine();
+        surname = surname.trim();
+        surname = firstLetterUpperCase(surname);
+        //end surname
+
+        //birthDate
+        System.out.print("birth date: " + employees.get(employeeIndex).getBirthDate() + " -> ");
+        LocalDate birthDate = enterBirthDate();
+        //end birthDate
+
+        //idnp
+        System.out.print("idnp: " + employees.get(employeeIndex).getIdnp() + " -> ");
+        String idnp_ = sc.nextLine();
+        idnp_ = idnp_.trim();
+        //end idnp
+
+        double salary = enterSalary();
+
+        int id = employees.size();
+        return new Employee(id, name, surname, idnp_, birthDate, salary);
+    }
+
+    private static void updateByIdnp() {
         ScreenUtilities.clearScreen();
 
         System.out.print("Enter employee's idnp: ");
@@ -274,54 +358,7 @@ public class EmployeeDataManager {
         }
 
         if (idnpFound) {
-            System.out.println("Editing employee " + employees.get(employeeIndex).getName()
-                    + " " + employees.get(employeeIndex).getSurname() + " (id: "
-                    + employees.get(employeeIndex).getId() + " / idnp: "
-                    + employees.get(employeeIndex).getIdnp() + ")...");
-            //name
-            System.out.print("name: " + employees.get(employeeIndex).getName() + " -> ");
-            String name = sc.nextLine();
-            name = name.trim();
-            name = firstLetterUpperCase(name);
-            employees.get(employeeIndex).setName(name);
-            //end name
-
-            //surname
-            System.out.print("surname: " + employees.get(employeeIndex).getSurname() + " -> ");
-            String surname = sc.nextLine();
-            surname = surname.trim();
-            surname = firstLetterUpperCase(surname);
-            employees.get(employeeIndex).setSurname(surname);
-            //end surname
-
-            //birthDate
-            System.out.print("birth date: " + employees.get(employeeIndex).getBirthDate() + " -> ");
-            String birthDate = sc.nextLine();
-            birthDate = birthDate.trim();
-            employees.get(employeeIndex).setBirthDate(birthDate);
-            //end birthDate
-
-            //idnp
-            System.out.print("idnp: " + employees.get(employeeIndex).getIdnp() + " -> ");
-            String idnp_ = sc.nextLine();
-            idnp_ = idnp_.trim();
-            employees.get(employeeIndex).setIdnp(idnp_);
-            //end idnp
-
-            double salary;
-            do {
-                System.out.print("salary: " + employees.get(employeeIndex).getSalary() + " -> ");
-                try {
-                    salary = sc.nextDouble();
-                    break;
-                } catch (Exception e) {
-                    System.out.println("Invalid salary format, try again (ex: 9999.9)");
-                } finally {
-                    sc.nextLine();
-                }
-            } while (true);
-            employees.get(employeeIndex).setSalary(salary);
-
+            employees.set(employeeIndex, updateStatement(employeeIndex));
             System.out.println("\nUpdated successfully!\n");
         } else {
             System.out.println("No such employee with indicated idnp (" + idnp + ").");
@@ -330,7 +367,7 @@ public class EmployeeDataManager {
         ScreenUtilities.enterAnyValueToContinue();
     }
 
-    private static void updateByName(List<Employee> employees) {
+    private static void updateByName() {
         ScreenUtilities.clearScreen();
 
         System.out.print("Enter employee's name: ");
@@ -357,54 +394,7 @@ public class EmployeeDataManager {
         }
 
         if (countFoundEmployees == 1) {
-            System.out.println("Editing employee " + employees.get(employeeIndex).getName()
-                    + " " + employees.get(employeeIndex).getSurname() + " (id: "
-                    + employees.get(employeeIndex).getId() + " / idnp: "
-                    + employees.get(employeeIndex).getIdnp() + ")...");
-            //name
-            System.out.print("name: " + employees.get(employeeIndex).getName() + " -> ");
-            String name_ = sc.nextLine();
-            name_ = name_.trim();
-            name_ = firstLetterUpperCase(name_);
-            employees.get(employeeIndex).setName(name_);
-            //end name
-
-            //surname
-            System.out.print("surname: " + employees.get(employeeIndex).getSurname() + " -> ");
-            String surname_ = sc.nextLine();
-            surname_ = surname_.trim();
-            surname_ = firstLetterUpperCase(surname_);
-            employees.get(employeeIndex).setSurname(surname_);
-            //end surname
-
-            //birthDate
-            System.out.print("birth date: " + employees.get(employeeIndex).getBirthDate() + " -> ");
-            String birthDate = sc.nextLine();
-            birthDate = birthDate.trim();
-            employees.get(employeeIndex).setBirthDate(birthDate);
-            //end birthDate
-
-            //idnp
-            System.out.print("idnp: " + employees.get(employeeIndex).getIdnp() + " -> ");
-            String idnp_ = sc.nextLine();
-            idnp_ = idnp_.trim();
-            employees.get(employeeIndex).setIdnp(idnp_);
-            //end idnp
-
-            double salary;
-            do {
-                System.out.print("salary: " + employees.get(employeeIndex).getSalary() + " -> ");
-                try {
-                    salary = sc.nextDouble();
-                    break;
-                } catch (Exception e) {
-                    System.out.println("Invalid salary format, try again (ex: 9999.9)");
-                } finally {
-                    sc.nextLine();
-                }
-            } while (true);
-            employees.get(employeeIndex).setSalary(salary);
-
+            employees.set(employeeIndex, updateStatement(employeeIndex));
             System.out.println("\nUpdated successfully!\n");
         } else {
             System.out.println("No such employee with indicated name and surname (" + name + " " + surname + ")" +
@@ -414,7 +404,7 @@ public class EmployeeDataManager {
         ScreenUtilities.enterAnyValueToContinue();
     }
 
-    private static void updateById(List<Employee> employees) {
+    private static void updateById() {
         ScreenUtilities.clearScreen();
 
         int id;
@@ -440,54 +430,7 @@ public class EmployeeDataManager {
         }
 
         if (idFound) {
-            System.out.println("Editing employee " + employees.get(employeeIndex).getName()
-                    + " " + employees.get(employeeIndex).getSurname() + " (id: "
-                    + employees.get(employeeIndex).getId() + " / idnp: "
-                    + employees.get(employeeIndex).getIdnp() + ")...");
-            //name
-            System.out.print("name: " + employees.get(employeeIndex).getName() + " -> ");
-            String name = sc.nextLine();
-            name = name.trim();
-            name = firstLetterUpperCase(name);
-            employees.get(employeeIndex).setName(name);
-            //end name
-
-            //surname
-            System.out.print("surname: " + employees.get(employeeIndex).getSurname() + " -> ");
-            String surname = sc.nextLine();
-            surname = surname.trim();
-            surname = firstLetterUpperCase(surname);
-            employees.get(employeeIndex).setSurname(surname);
-            //end surname
-
-            //birthDate
-            System.out.print("birth date: " + employees.get(employeeIndex).getBirthDate() + " -> ");
-            String birthDate = sc.nextLine();
-            birthDate = birthDate.trim();
-            employees.get(employeeIndex).setBirthDate(birthDate);
-            //end birthDate
-
-            //idnp
-            System.out.print("idnp: " + employees.get(employeeIndex).getIdnp() + " -> ");
-            String idnp_ = sc.nextLine();
-            idnp_ = idnp_.trim();
-            employees.get(employeeIndex).setIdnp(idnp_);
-            //end idnp
-
-            double salary;
-            do {
-                System.out.print("salary: " + employees.get(employeeIndex).getSalary() + " -> ");
-                try {
-                    salary = sc.nextDouble();
-                    break;
-                } catch (Exception e) {
-                    System.out.println("Invalid salary format, try again (ex: 9999.9)");
-                } finally {
-                    sc.nextLine();
-                }
-            } while (true);
-            employees.get(employeeIndex).setSalary(salary);
-
+            employees.set(employeeIndex, updateStatement(employeeIndex));
             System.out.println("\nUpdated successfully!\n");
         } else {
             System.out.println("No such employee with indicated id (" + id + ").");
@@ -496,7 +439,7 @@ public class EmployeeDataManager {
         ScreenUtilities.enterAnyValueToContinue();
     }
 
-    public static void update(List<Employee> employees) {
+    public static void update() {
         //submenu
         int nav = -1;
         do {
@@ -522,13 +465,13 @@ public class EmployeeDataManager {
 
             switch (nav) {
                 case 1:
-                    EmployeeDataManager.updateByIdnp(employees);
+                    EmployeeDataManager.updateByIdnp();
                     break;
                 case 2:
-                    EmployeeDataManager.updateById(employees);
+                    EmployeeDataManager.updateById();
                     break;
                 case 3:
-                    EmployeeDataManager.updateByName(employees);
+                    EmployeeDataManager.updateByName();
                     break;
                 case 0:
                     return;

@@ -1,14 +1,16 @@
 package com.step.data.employee;
 
+import java.time.LocalDate;
+
 public class Employee {
     private int id; // DB id
     private String name;
     private String surname;
     private String idnp;
-    private String birthDate;
+    private LocalDate birthDate;
     private double salary;
 
-    public Employee(int id, String name, String surname, String idnp, String birthDate, double salary) {
+    public Employee(int id, String name, String surname, String idnp, LocalDate birthDate, double salary) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -30,7 +32,7 @@ public class Employee {
         return surname;
     }
 
-    public String getBirthDate() {
+    public LocalDate getBirthDate() {
         return birthDate;
     }
 
@@ -54,7 +56,7 @@ public class Employee {
         this.idnp = idnp;
     }
 
-    protected void setBirthDate(String birthDate) {
+    protected void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
 
