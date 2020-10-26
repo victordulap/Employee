@@ -145,6 +145,14 @@ public class EmployeeDataManager {
     }
 
     //delete
+    private static void deleteStatement(int employeeIndex) {
+        System.out.println("Employee " + employees.get(employeeIndex).getName()
+                + " " + employees.get(employeeIndex).getSurname() + " (id: "
+                + employees.get(employeeIndex).getId() + " / idnp: "
+                + employees.get(employeeIndex).getIdnp() + ") was removed.");
+        employees.remove(employeeIndex);
+    }
+
     private static void deleteByIdnp() {
         ScreenUtilities.clearScreen();
 
@@ -163,12 +171,7 @@ public class EmployeeDataManager {
         }
 
         if (idnpFound) {
-            System.out.println("Employee " + employees.get(employeeIndex).getName()
-                    + " " + employees.get(employeeIndex).getSurname() + " (id: "
-                    + employees.get(employeeIndex).getId() + " / idnp: "
-                    + employees.get(employeeIndex).getIdnp() + ") was removed.");
-//            employees.removeIf(employee -> employee.getIdnp() == idnp);
-            employees.remove(employeeIndex);
+            deleteStatement(employeeIndex);
         } else {
             System.out.println("No such employee with indicated idnp (" + idnp + ").");
         }
@@ -204,11 +207,7 @@ public class EmployeeDataManager {
         }
 
         if (idFound) {
-            System.out.println("Employee " + employees.get(employeeIndex).getName()
-                    + " " + employees.get(employeeIndex).getSurname() + " (id: "
-                    + employees.get(employeeIndex).getId() + " / idnp: "
-                    + employees.get(employeeIndex).getIdnp() + ") was removed.");
-            employees.remove(employeeIndex);
+            deleteStatement(employeeIndex);
         } else {
             System.out.println("No such employee with indicated id (" + id + ").");
         }
@@ -244,11 +243,7 @@ public class EmployeeDataManager {
         }
 
         if (countFoundEmployees == 1) {
-            System.out.println("Employee " + employees.get(employeeIndex).getName()
-                    + " " + employees.get(employeeIndex).getSurname() + " (id: "
-                    + employees.get(employeeIndex).getId() + " / idnp: "
-                    + employees.get(employeeIndex).getIdnp() + ") was removed.");
-            employees.remove(employeeIndex);
+            deleteStatement(employeeIndex);
         } else {
             System.out.println("No such employee with indicated name and surname (" + name + " " + surname + ")" +
                     ", verify name and surname before entering");
