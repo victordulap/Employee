@@ -1,6 +1,5 @@
 package com.step.app;
 
-import com.step.data.employee.Employee;
 import com.step.data.menu.Menu;
 
 public class Main {

@@ -39,7 +39,7 @@ public class Menu{
                     EmployeeDataManager.insert();
                     break;
                 case 3:
-//                    EmployeeDataManager.update();
+                    EmployeeDataManager.update();
                     break;
                 case 4:
                     EmployeeDataManager.delete();

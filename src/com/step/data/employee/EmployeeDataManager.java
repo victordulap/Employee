@@ -24,7 +24,7 @@ public class EmployeeDataManager {
     private static LocalDate enterBirthDate() {
         LocalDate birthDate;
         do {
-            int year = 0, month = 0, day = 0;
+            int year, month, day;
             System.out.println("Entering birth date...");
             try {
                 System.out.print("\tyear: ");
@@ -73,7 +73,7 @@ public class EmployeeDataManager {
     }
 
     public static void insert() {
-        String moreEmployees = "false";
+        String moreEmployees;
 
         do {
             ScreenUtilities.clearScreen();
@@ -262,7 +262,7 @@ public class EmployeeDataManager {
             System.out.println();
             System.out.println("\t1. delete by idnp");
             System.out.println("\t2. delete by id");
-            System.out.println("\t2. delete by name and surname");
+            System.out.println("\t3. delete by name and surname");
             System.out.println();
             System.out.println("\t0. back");
 
@@ -443,7 +443,7 @@ public class EmployeeDataManager {
             System.out.println("Select update method:");
             System.out.println();
             System.out.println("\t1. update by idnp");
-            System.out.println("\t1. update by id");
+            System.out.println("\t2. update by id");
             System.out.println("\t3. update by name and surname");
             System.out.println();
             System.out.println("\t0. back");
