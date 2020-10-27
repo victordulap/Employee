@@ -9,9 +9,11 @@ public class Employee {
     private String idnp;
     private LocalDate birthDate;
     private double salary;
+    private static int totalEmployees;
 
-    public Employee(int id, String name, String surname, String idnp, LocalDate birthDate, double salary) {
-        this.id = id;
+    public Employee(String name, String surname, String idnp, LocalDate birthDate, double salary) {
+        this.id = totalEmployees;
+        totalEmployees++;
         this.name = name;
         this.surname = surname;
         this.idnp = idnp;

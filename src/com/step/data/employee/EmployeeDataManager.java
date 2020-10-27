@@ -24,16 +24,49 @@ public class EmployeeDataManager {
     private static LocalDate enterBirthDate() {
         LocalDate birthDate;
         do {
-            int year, month, day;
+            int year = -1, month = -1, day = -1;
+            boolean verifyIfDateValid = true;
+            boolean goToNext = true;
             System.out.println("Entering birth date...");
-            try {
-                System.out.print("\tyear: ");
-                year = sc.nextInt();
-                System.out.print("\tmonth: ");
-                month = sc.nextInt();
-                System.out.print("\tday: ");
-                day = sc.nextInt();
 
+            System.out.print("\tyear: ");
+            try {
+                year = sc.nextInt();
+            } catch (Exception e) {
+                goToNext = false;
+                System.out.println("Invalid format, please try again... (don't use any characters other than integers)");
+            } finally {
+                sc.nextLine();
+            }
+
+            if (goToNext) {
+                System.out.print("\tmonth: ");
+                try {
+                    month = sc.nextInt();
+                } catch (Exception e) {
+                    goToNext = false;
+//                    sc.nextLine();
+                    System.out.println("Invalid format, please try again... (don't use any characters other than integers)");
+                } finally {
+                    sc.nextLine();
+                }
+            }
+
+            if (goToNext) {
+                System.out.print("\tday: ");
+                try {
+                    day = sc.nextInt();
+                } catch (Exception e) {
+                    verifyIfDateValid = false;
+//                    sc.nextLine();
+                    System.out.println("Invalid format, please try again... (don't use any characters other than integers)");
+                } finally {
+                    sc.nextLine();
+                }
+            }
+
+
+            if (verifyIfDateValid) {
                 try {
                     birthDate = LocalDate.of(year, month, day);
                     break;
@@ -41,12 +74,8 @@ public class EmployeeDataManager {
                     System.out.println("Invalid date. please try again (ex: 2001-1-1 (yyyy/M/d))");
                     ScreenUtilities.enterAnyValueToContinue();
                 }
-            } catch (Exception e) {
-                System.out.println("Invalid format, please try again... (don't use any characters other than integers)");
             }
-            finally {
-                sc.nextLine();
-            }
+
         } while (true);
 
         return birthDate;
@@ -56,12 +85,13 @@ public class EmployeeDataManager {
         double salary;
 
         do {
-            System.out.print("Enter salary: ");
+//            System.out.print("Enter salary: ");
             try {
                 salary = sc.nextDouble();
                 break;
             } catch (Exception e) {
                 System.out.println("Invalid salary format, try again (ex: 9999.9)");
+                System.out.print("Enter idnp: ");
             } finally {
                 // reset scanner's line so it work properly,
                 // it doesn't reset on any scanner nextXxx() methods other than nextLine()
@@ -70,6 +100,59 @@ public class EmployeeDataManager {
         } while (true);
 
         return salary;
+    }
+
+    private static String enterIdnp() {
+        boolean repetitiveIdnp;
+        String idnp;
+        do {
+            repetitiveIdnp = false;
+//            System.out.print("Enter idnp: ");
+            idnp = sc.nextLine();
+            idnp = idnp.trim();
+
+            for (Employee employee : employees) {
+                if (employee.getIdnp().equals(idnp)) {
+                    repetitiveIdnp = true;
+                    break;
+                }
+            }
+
+            if (repetitiveIdnp) {
+                System.out.println("Entered idnp (" + idnp + ") is repetitive, try again...");
+                ScreenUtilities.enterAnyValueToContinue();
+                idnp = null;
+                System.out.print("Enter idnp: ");
+            }
+        } while (repetitiveIdnp);
+
+        return idnp;
+    }
+
+    private static String enterIdnp(String prevIdnp) {
+        boolean repetitiveIdnp = false;
+        String idnp;
+        do {
+//            System.out.print("Enter idnp: ");
+            idnp = sc.nextLine();
+            idnp = idnp.trim();
+
+            if(idnp.equals(prevIdnp)) return idnp;
+
+            for (Employee employee : employees) {
+                if (employee.getIdnp().equals(idnp)) {
+                    repetitiveIdnp = true;
+                    break;
+                }
+            }
+
+            if (repetitiveIdnp) {
+                System.out.println("Entered idnp (" + idnp + ") is repetitive, try again...");
+                ScreenUtilities.enterAnyValueToContinue();
+            }
+        } while (repetitiveIdnp);
+
+        return idnp.trim();
     }
 
     public static void insert() {
@@ -91,16 +174,14 @@ public class EmployeeDataManager {
             surname = firstLetterUpperCase(surname);
 
             System.out.print("Enter idnp: ");
-            String idnp = sc.nextLine();
-            idnp = idnp.trim();
+            String idnp = enterIdnp();
 
             LocalDate birthDate = enterBirthDate();
 
+            System.out.print("Enter salary: ");
             double salary = enterSalary();
 
-
-            int id = employees.size();
-            employees.add(new Employee(id, name, surname, idnp, birthDate, salary));
+            employees.add(new Employee(name, surname, idnp, birthDate, salary));
 
             ScreenUtilities.clearScreen();
 
@@ -326,14 +407,14 @@ public class EmployeeDataManager {
 
         //idnp
         System.out.print("idnp: " + employees.get(employeeIndex).getIdnp() + " -> ");
-        String idnp_ = sc.nextLine();
-        idnp_ = idnp_.trim();
+        String idnp_ = enterIdnp(employees.get(employeeIndex).getIdnp());
         //end idnp
 
+        System.out.print("salary: " + employees.get(employeeIndex).getSalary() + " -> ");
         double salary = enterSalary();
 
         int id = employees.size();
-        return new Employee(id, name, surname, idnp_, birthDate, salary);
+        return new Employee(name, surname, idnp_, birthDate, salary);
     }
 
     private static void updateByIdnp() {
