@@ -15,6 +15,11 @@ public class EmployeeDataManager {
 
     private static List<Employee> employees = new ArrayList<>();
 
+    static {
+        employees.add(new Employee("Victor", "Dulap", "1234567890123", LocalDate.now(), 9999.0));
+        employees.add(new Employee("Grigore", "Anatolenato", "6789012345123", LocalDate.now(), 1299.0));
+    }
+
     private static String firstLetterUpperCase(String str) {
         str = str.toLowerCase();
         str = str.substring(0, 1).toUpperCase() + str.substring(1);
@@ -71,23 +76,35 @@ public class EmployeeDataManager {
             enteredIdnp = sc.nextLine();
             enteredIdnp = enteredIdnp.trim();
 
-            List<String> idnps = new ArrayList<>();
-            for (Employee employee : employees) {
-                idnps.add(employee.getIdnp());
-            }
+            boolean verifyRest = true;
 
-            for (String idnp : idnps) {
-                if (idnp.equals(enteredIdnp)) {
-                    repetitiveIdnp = true;
-                    break;
-                }
-            }
-
-            if (repetitiveIdnp) {
-                System.out.println("Entered idnp (" + enteredIdnp + ") is repetitive, try again...");
+            if (enteredIdnp.length() != 13) {
+                verifyRest = false;
+                System.out.println("IDNP must contain 13 chars!");
                 ScreenUtilities.enterAnyValueToContinue();
-                enteredIdnp = null;
+                repetitiveIdnp = true;
                 System.out.print("Enter idnp: ");
+            }
+
+            if (verifyRest) {
+                List<String> idnps = new ArrayList<>();
+                for (Employee employee : employees) {
+                    idnps.add(employee.getIdnp());
+                }
+
+                for (String idnp : idnps) {
+                    if (idnp.equals(enteredIdnp)) {
+                        repetitiveIdnp = true;
+                        break;
+                    }
+                }
+
+                if (repetitiveIdnp) {
+                    System.out.println("Entered idnp (" + enteredIdnp + ") is repetitive, try again...");
+                    ScreenUtilities.enterAnyValueToContinue();
+                    enteredIdnp = null;
+                    System.out.print("Enter idnp: ");
+                }
             }
         } while (repetitiveIdnp);
 
@@ -95,29 +112,42 @@ public class EmployeeDataManager {
     }
 
     private static String enterIdnp(String prevIdnp) {
-        boolean repetitiveIdnp = false;
+        boolean repetitiveIdnp;
         String enteredIdnp;
         do {
+            repetitiveIdnp = false;
             enteredIdnp = sc.nextLine();
             enteredIdnp = enteredIdnp.trim();
 
-            if (enteredIdnp.equals(prevIdnp)) return enteredIdnp;
+            boolean verifyRest = true;
 
-            List<String> idnps = new ArrayList<>();
-            for (Employee employee : employees) {
-                idnps.add(employee.getIdnp());
-            }
-
-            for (String idnp : idnps) {
-                if (idnp.equals(enteredIdnp)) {
-                    repetitiveIdnp = true;
-                    break;
-                }
-            }
-
-            if (repetitiveIdnp) {
-                System.out.println("Entered idnp (" + enteredIdnp + ") is repetitive, try again...");
+            if (enteredIdnp.length() != 13) {
+                verifyRest = false;
+                System.out.println("IDNP must contain 13 chars!");
                 ScreenUtilities.enterAnyValueToContinue();
+                repetitiveIdnp = true;
+            }
+
+            if (verifyRest) {
+
+                if (enteredIdnp.equals(prevIdnp)) return enteredIdnp;
+
+                List<String> idnps = new ArrayList<>();
+                for (Employee employee : employees) {
+                    idnps.add(employee.getIdnp());
+                }
+
+                for (String idnp : idnps) {
+                    if (idnp.equals(enteredIdnp)) {
+                        repetitiveIdnp = true;
+                        break;
+                    }
+                }
+
+                if (repetitiveIdnp) {
+                    System.out.println("Entered idnp (" + enteredIdnp + ") is repetitive, try again...");
+                    ScreenUtilities.enterAnyValueToContinue();
+                }
             }
         } while (repetitiveIdnp);
 
@@ -135,12 +165,12 @@ public class EmployeeDataManager {
             System.out.print("Enter name: ");
             String name = sc.nextLine();
             name = name.trim();
-            name = firstLetterUpperCase(name);
+            name = (name.length() > 0) ? firstLetterUpperCase(name) : "";
 
             System.out.print("Enter surname: ");
             String surname = sc.nextLine();
             surname = surname.trim();
-            surname = firstLetterUpperCase(surname);
+            surname = (surname.length() > 0) ? firstLetterUpperCase(surname) : "";
 
             System.out.print("Enter idnp: ");
             String idnp = enterIdnp();
@@ -215,7 +245,21 @@ public class EmployeeDataManager {
         char crossTLeft = '\u2563';
         char crossTRight = '\u2560';
 
-        int iN = 3, nameN = 15, surnameN = 15, birthDateN = 10, idnpN = 13, salaryN = 10;
+        int employeesSize = employees.size();
+//        int iN = 3, nameN = 15, surnameN = 15, birthDateN = 10, idnpN = 13, salaryN = 10;
+        int iN = employeesSize > 1 ? employeesSize : 2;
+
+        int nameN = 4;
+        int surnameN = 7;
+        int birthDateN = 10;
+        int idnpN = 13;
+        int salaryN = 10;
+        for (int i = 0; i < employeesSize; i++) {
+            if (employees.get(i).getName().length() > nameN) nameN = employees.get(i).getName().length();
+            if (employees.get(i).getSurname().length() > surnameN) surnameN = employees.get(i).getSurname().length();
+            if (String.valueOf(employees.get(i).getSalary()).length() > salaryN)
+                salaryN = String.valueOf(employees.get(i).getSalary()).length();
+        }
 
         System.out.println(cornerTopLeft + generateMultipleChars(iN, lineX) + crossTDown // i
                 + generateMultipleChars(nameN, lineX) + crossTDown //name
@@ -231,7 +275,6 @@ public class EmployeeDataManager {
                 + insertWord(idnpN, "idnp") + lineY
                 + insertWord(salaryN, "salary ($)") + lineY);
 
-        int employeesSize = employees.size();
         for (int i = 0; i < employeesSize; i++) {
             System.out.println(crossTRight + generateMultipleChars(iN, lineX) + cross // i
                     + generateMultipleChars(nameN, lineX) + cross //name
