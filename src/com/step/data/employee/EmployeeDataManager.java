@@ -72,11 +72,11 @@ public class EmployeeDataManager {
             enteredIdnp = enteredIdnp.trim();
 
             List<String> idnps = new ArrayList<>();
-            for(Employee employee: employees) {
+            for (Employee employee : employees) {
                 idnps.add(employee.getIdnp());
             }
 
-            for (String idnp: idnps) {
+            for (String idnp : idnps) {
                 if (idnp.equals(enteredIdnp)) {
                     repetitiveIdnp = true;
                     break;
@@ -104,11 +104,11 @@ public class EmployeeDataManager {
             if (enteredIdnp.equals(prevIdnp)) return enteredIdnp;
 
             List<String> idnps = new ArrayList<>();
-            for(Employee employee: employees) {
+            for (Employee employee : employees) {
                 idnps.add(employee.getIdnp());
             }
 
-            for (String idnp: idnps) {
+            for (String idnp : idnps) {
                 if (idnp.equals(enteredIdnp)) {
                     repetitiveIdnp = true;
                     break;
@@ -169,10 +169,32 @@ public class EmployeeDataManager {
 
     }
 
+    private static String generateMultipleChars(int n, char c) {
+        StringBuilder str = new StringBuilder();
+
+        for (int i = 0; i < n; i++) {
+            str.append(c);
+        }
+
+        return str.toString();
+    }
+
+    // inserts word with n spaces needed
+    private static String insertWord(int maxLenght, String word) {
+        StringBuilder str = new StringBuilder();
+        str.append(word);
+
+        int n = maxLenght - word.length();
+        for (int i = 0; i < n; i++) {
+            str.append(' ');
+        }
+
+        return String.valueOf(str);
+    }
+
     public static void view() {
         ScreenUtilities.clearScreen();
 
-//        int employeesPerPage = 2;
         if (employees.size() > 0) {
             System.out.println("EMPLOYEE LIST: \n");
         } else {
@@ -181,15 +203,59 @@ public class EmployeeDataManager {
             return;
         }
 
-        for (int i = 0; i < employees.size(); i++) {
-            System.out.println((i + 1) + ". --------------------");
-//            System.out.println("\tid: " + employees.get(i).getId());
-            System.out.println("\tname: " + employees.get(i).getName());
-            System.out.println("\tsurname: " + employees.get(i).getSurname());
-            System.out.println("\tbirthdate: " + employees.get(i).getBirthDateFormatted());
-            System.out.println("\tidnp: " + employees.get(i).getIdnp());
-            System.out.println("\tsalary: $" + employees.get(i).getSalary());
+        char cornerTopLeft = '\u2554';
+        char cornerTopRight = '\u2557';
+        char cornerBottomLeft = '\u255A';
+        char cornerBottomRight = '\u255D';
+        char lineX = '\u2550';
+        char lineY = '\u2551';
+        char cross = '\u256C';
+        char crossTDown = '\u2566';
+        char crossTUp = '\u2569';
+        char crossTLeft = '\u2563';
+        char crossTRight = '\u2560';
+
+        int iN = 3, nameN = 15, surnameN = 15, birthDateN = 10, idnpN = 13, salaryN = 10;
+
+        System.out.println(cornerTopLeft + generateMultipleChars(iN, lineX) + crossTDown // i
+                + generateMultipleChars(nameN, lineX) + crossTDown //name
+                + generateMultipleChars(surnameN, lineX) + crossTDown // surname
+                + generateMultipleChars(birthDateN, lineX) + crossTDown // birth date
+                + generateMultipleChars(idnpN, lineX) + crossTDown // idnp
+                + generateMultipleChars(salaryN, lineX) // salary
+                + cornerTopRight);
+        System.out.println(lineY + insertWord(iN, "nr") + lineY
+                + insertWord(nameN, "name") + lineY
+                + insertWord(surnameN, "surname") + lineY
+                + insertWord(birthDateN, "birth date") + lineY
+                + insertWord(idnpN, "idnp") + lineY
+                + insertWord(salaryN, "salary ($)") + lineY);
+
+        int employeesSize = employees.size();
+        for (int i = 0; i < employeesSize; i++) {
+            System.out.println(crossTRight + generateMultipleChars(iN, lineX) + cross // i
+                    + generateMultipleChars(nameN, lineX) + cross //name
+                    + generateMultipleChars(surnameN, lineX) + cross // surname
+                    + generateMultipleChars(birthDateN, lineX) + cross // birth date
+                    + generateMultipleChars(idnpN, lineX) + cross // idnp
+                    + generateMultipleChars(salaryN, lineX) // salary
+                    + crossTLeft);
+
+            System.out.println(lineY + insertWord(iN, String.valueOf(i + 1)) + lineY
+                    + insertWord(nameN, employees.get(i).getName()) + lineY
+                    + insertWord(surnameN, employees.get(i).getSurname()) + lineY
+                    + insertWord(birthDateN, employees.get(i).getBirthDateFormatted()) + lineY
+                    + insertWord(idnpN, employees.get(i).getIdnp()) + lineY
+                    + insertWord(salaryN, String.valueOf(employees.get(i).getSalary())) + lineY);
         }
+
+        System.out.println(cornerBottomLeft + generateMultipleChars(iN, lineX) + crossTUp // i
+                + generateMultipleChars(nameN, lineX) + crossTUp //name
+                + generateMultipleChars(surnameN, lineX) + crossTUp // surname
+                + generateMultipleChars(birthDateN, lineX) + crossTUp // birth date
+                + generateMultipleChars(idnpN, lineX) + crossTUp // idnp
+                + generateMultipleChars(salaryN, lineX)  // salary
+                + cornerBottomRight);
 
         ScreenUtilities.enterAnyValueToContinue();
     }
