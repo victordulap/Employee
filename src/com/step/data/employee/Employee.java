@@ -38,6 +38,10 @@ public class Employee {
         return birthDate;
     }
 
+    public String getBirthDateFormatted() {
+        return birthDate.format(EmployeeDataManager.dateTimeFormatter);
+    }
+
     protected String getIdnp() {
         return idnp;
     }

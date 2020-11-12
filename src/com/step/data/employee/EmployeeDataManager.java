@@ -3,15 +3,16 @@ package com.step.data.employee;
 import com.step.data.menu.ScreenUtilities;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
 public class EmployeeDataManager {
     private static final Scanner sc = new Scanner(System.in);
-
-    //    private static Employee[] employees = new Employee[100];
-    //    private static int employeesCount = 0;
+    protected static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+    
     private static List<Employee> employees = new ArrayList<>();
 
     private static String firstLetterUpperCase(String str) {
@@ -24,61 +25,18 @@ public class EmployeeDataManager {
     private static LocalDate enterBirthDate() {
         LocalDate birthDate;
         do {
-            int year = -1, month = -1, day = -1;
-            boolean verifyIfDateValid = true;
-            boolean goToNext = true;
-            System.out.println("Entering birth date...");
+            System.out.println("Enter birth date in format dd.MM.yyyy (ex: 31.01.1999)");
+            System.out.print("Birth date: ");
+            String date = sc.nextLine();
+            date = date.trim();
 
-            System.out.print("\tyear: ");
             try {
-                year = sc.nextInt();
+                birthDate = LocalDate.parse(date, dateTimeFormatter);
+                break;
             } catch (Exception e) {
-                goToNext = false;
-                System.out.println("Invalid format, please try again... (don't use any characters other than integers)");
-            } finally {
-                sc.nextLine();
+                System.out.println("Invalid date. please try again (ex: 31.01.1999 (dd.MM.yyyy))");
+                ScreenUtilities.enterAnyValueToContinue();
             }
-
-            if (goToNext) {
-                System.out.print("\tmonth: ");
-                try {
-                    month = sc.nextInt();
-                } catch (Exception e) {
-                    goToNext = false;
-//                    sc.nextLine();
-                    System.out.println("Invalid format, please try again... (don't use any characters other than integers)");
-                } finally {
-                    sc.nextLine();
-                }
-            }
-
-            if (goToNext) {
-                System.out.print("\tday: ");
-                try {
-                    day = sc.nextInt();
-                } catch (Exception e) {
-                    verifyIfDateValid = false;
-//                    sc.nextLine();
-                    System.out.println("Invalid format, please try again... (don't use any characters other than integers)");
-                } finally {
-                    sc.nextLine();
-                }
-            }
-
-
-            if (verifyIfDateValid) {
-                try {
-                    birthDate = LocalDate.of(year, month, day);
-
-                    //             str V
-//                    LocalDate.parse(date);
-                    break;
-                } catch (Exception e) {
-                    System.out.println("Invalid date. please try again (ex: 2001-1-1 (yyyy/M/d))");
-                    ScreenUtilities.enterAnyValueToContinue();
-                }
-            }
-
         } while (true);
 
         return birthDate;
@@ -141,7 +99,7 @@ public class EmployeeDataManager {
             idnp = sc.nextLine();
             idnp = idnp.trim();
 
-            if(idnp.equals(prevIdnp)) return idnp;
+            if (idnp.equals(prevIdnp)) return idnp;
 
             for (Employee employee : employees) {
                 if (employee.getIdnp().equals(idnp)) {
@@ -193,7 +151,7 @@ public class EmployeeDataManager {
             int i = employees.size() - 1;
             System.out.println("\tname: " + employees.get(i).getName());
             System.out.println("\tsurname: " + employees.get(i).getSurname());
-            System.out.println("\tbirthdate: " + employees.get(i).getBirthDate());
+            System.out.println("\tbirthdate: " + employees.get(i).getBirthDateFormatted());
             System.out.println("\tidnp: " + employees.get(i).getIdnp());
             System.out.println("\tsalary: $" + employees.get(i).getSalary());
 
@@ -221,7 +179,7 @@ public class EmployeeDataManager {
 //            System.out.println("\tid: " + employees.get(i).getId());
             System.out.println("\tname: " + employees.get(i).getName());
             System.out.println("\tsurname: " + employees.get(i).getSurname());
-            System.out.println("\tbirthdate: " + employees.get(i).getBirthDate());
+            System.out.println("\tbirthdate: " + employees.get(i).getBirthDateFormatted());
             System.out.println("\tidnp: " + employees.get(i).getIdnp());
             System.out.println("\tsalary: $" + employees.get(i).getSalary());
         }
@@ -405,7 +363,7 @@ public class EmployeeDataManager {
         //end surname
 
         //birthDate
-        System.out.print("birth date: " + employees.get(employeeIndex).getBirthDate() + " -> ");
+        System.out.print("birth date: " + employees.get(employeeIndex).getBirthDateFormatted() + " -> ");
         LocalDate birthDate = enterBirthDate();
         //end birthDate
 
