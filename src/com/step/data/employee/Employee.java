@@ -3,7 +3,7 @@ package com.step.data.employee;
 import java.time.LocalDate;
 
 public class Employee {
-    private int id; // DB id
+//    private int id; // DB id
     private String name;
     private String surname;
     private String idnp;
@@ -12,7 +12,7 @@ public class Employee {
     private static int totalEmployees;
 
     public Employee(String name, String surname, String idnp, LocalDate birthDate, double salary) {
-        this.id = totalEmployees;
+//        this.id = totalEmployees;
         totalEmployees++;
         this.name = name;
         this.surname = surname;
@@ -42,28 +42,6 @@ public class Employee {
         return idnp;
     }
 
-    public int getId() { return id; }
+//    public int getId() { return id; }
     //getters end
-
-    //setters
-    protected void setName(String name) {
-        this.name = name;
-    }
-
-    protected void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    protected void setIdnp(String idnp) {
-        this.idnp = idnp;
-    }
-
-    protected void setBirthDate(LocalDate birthDate) {
-        this.birthDate = birthDate;
-    }
-
-    protected void setSalary(double salary) {
-        this.salary = salary;
-    }
-    //setters end
 }

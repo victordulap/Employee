@@ -69,6 +69,9 @@ public class EmployeeDataManager {
             if (verifyIfDateValid) {
                 try {
                     birthDate = LocalDate.of(year, month, day);
+
+                    //             str V
+//                    LocalDate.parse(date);
                     break;
                 } catch (Exception e) {
                     System.out.println("Invalid date. please try again (ex: 2001-1-1 (yyyy/M/d))");
@@ -111,6 +114,7 @@ public class EmployeeDataManager {
             idnp = sc.nextLine();
             idnp = idnp.trim();
 
+            // lista de indp
             for (Employee employee : employees) {
                 if (employee.getIdnp().equals(idnp)) {
                     repetitiveIdnp = true;
@@ -214,7 +218,7 @@ public class EmployeeDataManager {
 
         for (int i = 0; i < employees.size(); i++) {
             System.out.println((i + 1) + ". --------------------");
-            System.out.println("\tid: " + employees.get(i).getId());
+//            System.out.println("\tid: " + employees.get(i).getId());
             System.out.println("\tname: " + employees.get(i).getName());
             System.out.println("\tsurname: " + employees.get(i).getSurname());
             System.out.println("\tbirthdate: " + employees.get(i).getBirthDate());
@@ -228,9 +232,9 @@ public class EmployeeDataManager {
     //delete
     private static void deleteStatement(int employeeIndex) {
         System.out.println("Employee " + employees.get(employeeIndex).getName()
-                + " " + employees.get(employeeIndex).getSurname() + " (id: "
-                + employees.get(employeeIndex).getId() + " / idnp: "
-                + employees.get(employeeIndex).getIdnp() + ") was removed.");
+                + " " + employees.get(employeeIndex).getSurname() /*+ " (id: "
+                + employees.get(employeeIndex).getId() + " / idnp: "*/
+                + " (idnp : " + employees.get(employeeIndex).getIdnp() + ") was removed.");
         employees.remove(employeeIndex);
     }
 
@@ -260,41 +264,41 @@ public class EmployeeDataManager {
         ScreenUtilities.enterAnyValueToContinue();
     }
 
-    private static void deleteById() {
-        ScreenUtilities.clearScreen();
-
-        int id;
-        do {
-            System.out.print("Enter employee's id: ");
-            try {
-                id = sc.nextInt();
-                break;
-            } catch (Exception e) {
-                System.out.println("Invalid id format, try again (ex: 123)");
-            } finally {
-                // reset scanner's line so it work properly,
-                // it doesn't reset on any scanner nextXxx() methods other than nextLine()
-                sc.nextLine();
-            }
-        } while (true);
-
-        boolean idFound = false;
-        int employeeIndex = -1;
-        for (int i = 0; i < employees.size(); i++) {
-            if (employees.get(i).getId() == id) {
-                idFound = true;
-                employeeIndex = i;
-            }
-        }
-
-        if (idFound) {
-            deleteStatement(employeeIndex);
-        } else {
-            System.out.println("No such employee with indicated id (" + id + ").");
-        }
-
-        ScreenUtilities.enterAnyValueToContinue();
-    }
+//    private static void deleteById() {
+//        ScreenUtilities.clearScreen();
+//
+//        int id;
+//        do {
+//            System.out.print("Enter employee's id: ");
+//            try {
+//                id = sc.nextInt();
+//                break;
+//            } catch (Exception e) {
+//                System.out.println("Invalid id format, try again (ex: 123)");
+//            } finally {
+//                // reset scanner's line so it work properly,
+//                // it doesn't reset on any scanner nextXxx() methods other than nextLine()
+//                sc.nextLine();
+//            }
+//        } while (true);
+//
+//        boolean idFound = false;
+//        int employeeIndex = -1;
+//        for (int i = 0; i < employees.size(); i++) {
+//            if (employees.get(i).getId() == id) {
+//                idFound = true;
+//                employeeIndex = i;
+//            }
+//        }
+//
+//        if (idFound) {
+//            deleteStatement(employeeIndex);
+//        } else {
+//            System.out.println("No such employee with indicated id (" + id + ").");
+//        }
+//
+//        ScreenUtilities.enterAnyValueToContinue();
+//    }
 
     private static void deleteByName() {
         ScreenUtilities.clearScreen();
@@ -342,8 +346,8 @@ public class EmployeeDataManager {
             System.out.println("Select delete method:");
             System.out.println();
             System.out.println("\t1. delete by idnp");
-            System.out.println("\t2. delete by id");
-            System.out.println("\t3. delete by name and surname");
+            System.out.println("\t2. delete by name and surname");
+//            System.out.println("\t3. delete by id");
             System.out.println();
             System.out.println("\t0. back");
 
@@ -362,11 +366,11 @@ public class EmployeeDataManager {
                     EmployeeDataManager.deleteByIdnp();
                     break;
                 case 2:
-                    EmployeeDataManager.deleteById();
-                    break;
-                case 3:
                     EmployeeDataManager.deleteByName();
                     break;
+//                case 3:
+//                    EmployeeDataManager.deleteById();
+//                    break;
                 case 0:
                     return;
 
@@ -383,9 +387,9 @@ public class EmployeeDataManager {
     //update
     private static Employee updateStatement(int employeeIndex) {
         System.out.println("Editing employee " + employees.get(employeeIndex).getName()
-                + " " + employees.get(employeeIndex).getSurname() + " (id: "
-                + employees.get(employeeIndex).getId() + " / idnp: "
-                + employees.get(employeeIndex).getIdnp() + ")...");
+                + " " + employees.get(employeeIndex).getSurname() /*+ " (id: "
+                + employees.get(employeeIndex).getId() + " / idnp: "*/
+                + " (idnp: " + employees.get(employeeIndex).getIdnp() + ")...");
         //name
         System.out.print("name: " + employees.get(employeeIndex).getName() + " -> ");
         String name = sc.nextLine();
@@ -407,14 +411,14 @@ public class EmployeeDataManager {
 
         //idnp
         System.out.print("idnp: " + employees.get(employeeIndex).getIdnp() + " -> ");
-        String idnp_ = enterIdnp(employees.get(employeeIndex).getIdnp());
+        String idnp = enterIdnp(employees.get(employeeIndex).getIdnp());
         //end idnp
 
         System.out.print("salary: " + employees.get(employeeIndex).getSalary() + " -> ");
         double salary = enterSalary();
 
-        int id = employees.size();
-        return new Employee(name, surname, idnp_, birthDate, salary);
+//        int id = employees.size();
+        return new Employee(name, surname, idnp, birthDate, salary);
     }
 
     private static void updateByIdnp() {
@@ -480,40 +484,40 @@ public class EmployeeDataManager {
         ScreenUtilities.enterAnyValueToContinue();
     }
 
-    private static void updateById() {
-        ScreenUtilities.clearScreen();
-
-        int id;
-        do {
-            System.out.print("Enter employee's id: ");
-            try {
-                id = sc.nextInt();
-                break;
-            } catch (Exception e) {
-                System.out.println("Invalid id format, try again (ex: 123)");
-            } finally {
-                sc.nextLine();
-            }
-        } while (true);
-
-        boolean idFound = false;
-        int employeeIndex = -1;
-        for (int i = 0; i < employees.size(); i++) {
-            if (employees.get(i).getId() == id) {
-                idFound = true;
-                employeeIndex = i;
-            }
-        }
-
-        if (idFound) {
-            employees.set(employeeIndex, updateStatement(employeeIndex));
-            System.out.println("\nUpdated successfully!\n");
-        } else {
-            System.out.println("No such employee with indicated id (" + id + ").");
-        }
-
-        ScreenUtilities.enterAnyValueToContinue();
-    }
+//    private static void updateById() {
+//        ScreenUtilities.clearScreen();
+//
+//        int id;
+//        do {
+//            System.out.print("Enter employee's id: ");
+//            try {
+//                id = sc.nextInt();
+//                break;
+//            } catch (Exception e) {
+//                System.out.println("Invalid id format, try again (ex: 123)");
+//            } finally {
+//                sc.nextLine();
+//            }
+//        } while (true);
+//
+//        boolean idFound = false;
+//        int employeeIndex = -1;
+//        for (int i = 0; i < employees.size(); i++) {
+//            if (employees.get(i).getId() == id) {
+//                idFound = true;
+//                employeeIndex = i;
+//            }
+//        }
+//
+//        if (idFound) {
+//            employees.set(employeeIndex, updateStatement(employeeIndex));
+//            System.out.println("\nUpdated successfully!\n");
+//        } else {
+//            System.out.println("No such employee with indicated id (" + id + ").");
+//        }
+//
+//        ScreenUtilities.enterAnyValueToContinue();
+//    }
 
     public static void update() {
         //submenu
@@ -524,8 +528,8 @@ public class EmployeeDataManager {
             System.out.println("Select update method:");
             System.out.println();
             System.out.println("\t1. update by idnp");
-            System.out.println("\t2. update by id");
-            System.out.println("\t3. update by name and surname");
+            System.out.println("\t2. update by name and surname");
+//            System.out.println("\t3. update by id");
             System.out.println();
             System.out.println("\t0. back");
 
@@ -544,11 +548,11 @@ public class EmployeeDataManager {
                     EmployeeDataManager.updateByIdnp();
                     break;
                 case 2:
-                    EmployeeDataManager.updateById();
-                    break;
-                case 3:
                     EmployeeDataManager.updateByName();
                     break;
+//                case 3:
+//                    EmployeeDataManager.updateById();
+//                    break;
                 case 0:
                     return;
 
