@@ -12,7 +12,7 @@ import java.util.Scanner;
 public class EmployeeDataManager {
     private static final Scanner sc = new Scanner(System.in);
     protected static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-    
+
     private static List<Employee> employees = new ArrayList<>();
 
     private static String firstLetterUpperCase(String str) {
@@ -26,7 +26,7 @@ public class EmployeeDataManager {
         LocalDate birthDate;
         do {
             System.out.println("Enter birth date in format dd.MM.yyyy (ex: 31.01.1999)");
-            System.out.print("Birth date: ");
+            System.out.print("birth date: ");
             String date = sc.nextLine();
             date = date.trim();
 
@@ -65,56 +65,63 @@ public class EmployeeDataManager {
 
     private static String enterIdnp() {
         boolean repetitiveIdnp;
-        String idnp;
+        String enteredIdnp;
         do {
             repetitiveIdnp = false;
-//            System.out.print("Enter idnp: ");
-            idnp = sc.nextLine();
-            idnp = idnp.trim();
+            enteredIdnp = sc.nextLine();
+            enteredIdnp = enteredIdnp.trim();
 
-            // lista de indp
-            for (Employee employee : employees) {
-                if (employee.getIdnp().equals(idnp)) {
+            List<String> idnps = new ArrayList<>();
+            for(Employee employee: employees) {
+                idnps.add(employee.getIdnp());
+            }
+
+            for (String idnp: idnps) {
+                if (idnp.equals(enteredIdnp)) {
                     repetitiveIdnp = true;
                     break;
                 }
             }
 
             if (repetitiveIdnp) {
-                System.out.println("Entered idnp (" + idnp + ") is repetitive, try again...");
+                System.out.println("Entered idnp (" + enteredIdnp + ") is repetitive, try again...");
                 ScreenUtilities.enterAnyValueToContinue();
-                idnp = null;
+                enteredIdnp = null;
                 System.out.print("Enter idnp: ");
             }
         } while (repetitiveIdnp);
 
-        return idnp;
+        return enteredIdnp;
     }
 
     private static String enterIdnp(String prevIdnp) {
         boolean repetitiveIdnp = false;
-        String idnp;
+        String enteredIdnp;
         do {
-//            System.out.print("Enter idnp: ");
-            idnp = sc.nextLine();
-            idnp = idnp.trim();
+            enteredIdnp = sc.nextLine();
+            enteredIdnp = enteredIdnp.trim();
 
-            if (idnp.equals(prevIdnp)) return idnp;
+            if (enteredIdnp.equals(prevIdnp)) return enteredIdnp;
 
-            for (Employee employee : employees) {
-                if (employee.getIdnp().equals(idnp)) {
+            List<String> idnps = new ArrayList<>();
+            for(Employee employee: employees) {
+                idnps.add(employee.getIdnp());
+            }
+
+            for (String idnp: idnps) {
+                if (idnp.equals(enteredIdnp)) {
                     repetitiveIdnp = true;
                     break;
                 }
             }
 
             if (repetitiveIdnp) {
-                System.out.println("Entered idnp (" + idnp + ") is repetitive, try again...");
+                System.out.println("Entered idnp (" + enteredIdnp + ") is repetitive, try again...");
                 ScreenUtilities.enterAnyValueToContinue();
             }
         } while (repetitiveIdnp);
 
-        return idnp.trim();
+        return enteredIdnp.trim();
     }
 
     public static void insert() {
