@@ -2,7 +2,7 @@ package com.step.data.menu;
 
 import java.util.Scanner;
 
-public class ScreenUtilities {
+public class Utilities {
     private static Scanner sc = new Scanner(System.in);
 
     public static void clearScreen() {
@@ -31,4 +31,12 @@ public class ScreenUtilities {
         System.out.println("Enter any value to " + messageInsteadOfContinue + "...");
         sc.nextLine();
     }
+
+    public static String firstLetterUpperCase(String str) {
+        str = str.toLowerCase();
+        str = str.substring(0, 1).toUpperCase() + str.substring(1);
+
+        return str;
+    }
+
 }

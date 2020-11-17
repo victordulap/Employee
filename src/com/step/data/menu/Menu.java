@@ -25,7 +25,7 @@ public class Menu{
                 nav = sc.nextInt();
             } catch (Exception e) {
                 System.out.println("\nInvalid format, try again (ex: 1)");
-                ScreenUtilities.enterAnyValueToContinue();
+                Utilities.enterAnyValueToContinue();
             }
             finally {
                 sc.nextLine();
@@ -51,11 +51,11 @@ public class Menu{
                 default:
                     System.out.println("\nNo such submenu, try again (ex: 1)");
 //                    ScreenUtilities.wait(2000);
-                    ScreenUtilities.enterAnyValueToContinue();
+                    Utilities.enterAnyValueToContinue();
                     break;
             }
 
-            ScreenUtilities.clearScreen();
+            Utilities.clearScreen();
         } while (nav != 0);
     }
 }

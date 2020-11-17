@@ -1,24 +1,24 @@
 package com.step.data.employee;
 
+import com.sun.scenario.effect.impl.prism.PrImage;
+
 import java.time.LocalDate;
 
 public class Employee {
-//    private int id; // DB id
     private String name;
     private String surname;
     private String idnp;
     private LocalDate birthDate;
     private double salary;
-//    private static int totalEmployees;
+    private Job job;
 
-    public Employee(String name, String surname, String idnp, LocalDate birthDate, double salary) {
-//        this.id = totalEmployees;
-//        totalEmployees++;
+    public Employee(String name, String surname, String idnp, LocalDate birthDate, double salary, Job job) {
         this.name = name;
         this.surname = surname;
         this.idnp = idnp;
         this.birthDate = birthDate;
         this.salary = salary;
+        this.job = job;
     }
 
     //getters
@@ -46,6 +46,8 @@ public class Employee {
         return idnp;
     }
 
-//    public int getId() { return id; }
+    public Job getJob() { return job; }
+
+    //    public int getId() { return id; }
     //getters end
 }

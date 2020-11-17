@@ -1,13 +1,10 @@
 package com.step.data.employee;
 
-import com.step.data.menu.ScreenUtilities;
+import com.step.data.menu.Utilities;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class EmployeeDataManager {
     private static final Scanner sc = new Scanner(System.in);
@@ -16,16 +13,10 @@ public class EmployeeDataManager {
     private static List<Employee> employees = new ArrayList<>();
 
     static {
-        employees.add(new Employee("Victor", "Dulap", "1234567890123", LocalDate.now(), 9999.0));
-        employees.add(new Employee("Grigore", "Anatolenato", "6789012345123", LocalDate.now(), 1299.0));
+        employees.add(new Employee("Victor", "Dulap", "1234567890123", LocalDate.now(), 9999.0, Job.MANAGER));
+        employees.add(new Employee("Grigore", "Anatolenato", "6789012345123", LocalDate.now(), 1299.0, Job.PROJECT_MANAGER));
     }
 
-    private static String firstLetterUpperCase(String str) {
-        str = str.toLowerCase();
-        str = str.substring(0, 1).toUpperCase() + str.substring(1);
-
-        return str;
-    }
 
     private static LocalDate enterBirthDate() {
         LocalDate birthDate;
@@ -40,7 +31,7 @@ public class EmployeeDataManager {
                 break;
             } catch (Exception e) {
                 System.out.println("Invalid date. please try again (ex: 31.01.1999 (dd.MM.yyyy))");
-                ScreenUtilities.enterAnyValueToContinue();
+                Utilities.enterAnyValueToContinue();
             }
         } while (true);
 
@@ -81,7 +72,7 @@ public class EmployeeDataManager {
             if (enteredIdnp.length() != 13) {
                 verifyRest = false;
                 System.out.println("IDNP must contain 13 chars!");
-                ScreenUtilities.enterAnyValueToContinue();
+                Utilities.enterAnyValueToContinue();
                 repetitiveIdnp = true;
                 System.out.print("Enter idnp: ");
             }
@@ -101,7 +92,7 @@ public class EmployeeDataManager {
 
                 if (repetitiveIdnp) {
                     System.out.println("Entered idnp (" + enteredIdnp + ") is repetitive, try again...");
-                    ScreenUtilities.enterAnyValueToContinue();
+                    Utilities.enterAnyValueToContinue();
                     enteredIdnp = null;
                     System.out.print("Enter idnp: ");
                 }
@@ -124,7 +115,7 @@ public class EmployeeDataManager {
             if (enteredIdnp.length() != 13) {
                 verifyRest = false;
                 System.out.println("IDNP must contain 13 chars!");
-                ScreenUtilities.enterAnyValueToContinue();
+                Utilities.enterAnyValueToContinue();
                 repetitiveIdnp = true;
             }
 
@@ -146,7 +137,7 @@ public class EmployeeDataManager {
 
                 if (repetitiveIdnp) {
                     System.out.println("Entered idnp (" + enteredIdnp + ") is repetitive, try again...");
-                    ScreenUtilities.enterAnyValueToContinue();
+                    Utilities.enterAnyValueToContinue();
                 }
             }
         } while (repetitiveIdnp);
@@ -154,23 +145,45 @@ public class EmployeeDataManager {
         return enteredIdnp.trim();
     }
 
+    private static Job enterJob() {
+        boolean validJob = false;
+        String job = Job.MANAGER.toString();
+        while (!validJob) {
+            job = sc.nextLine();
+
+            for (Job j : Job.values()) {
+                if (j.toString().equals(job.toUpperCase())) {
+                    validJob = true;
+                }
+            }
+            if (!validJob) {
+                System.out.println("Invalid job, available jobs: " + Arrays.toString(Job.values()));
+                Utilities.enterAnyValueToContinue();
+                System.out.print("Enter job: ");
+            }
+        }
+        job = job.toUpperCase();
+
+        return Job.valueOf(job);
+    }
+
     public static void insert() {
         String moreEmployees;
 
         do {
-            ScreenUtilities.clearScreen();
+            Utilities.clearScreen();
 
             System.out.println("INSERTING NEW EMPLOYEE...");
 
             System.out.print("Enter name: ");
             String name = sc.nextLine();
             name = name.trim();
-            name = (name.length() > 0) ? firstLetterUpperCase(name) : "";
+            name = (name.length() > 0) ? Utilities.firstLetterUpperCase(name) : "";
 
             System.out.print("Enter surname: ");
             String surname = sc.nextLine();
             surname = surname.trim();
-            surname = (surname.length() > 0) ? firstLetterUpperCase(surname) : "";
+            surname = (surname.length() > 0) ? Utilities.firstLetterUpperCase(surname) : "";
 
             System.out.print("Enter idnp: ");
             String idnp = enterIdnp();
@@ -180,9 +193,12 @@ public class EmployeeDataManager {
             System.out.print("Enter salary: ");
             double salary = enterSalary();
 
-            employees.add(new Employee(name, surname, idnp, birthDate, salary));
+            System.out.print("Enter job: ");
+            Job job = enterJob();
 
-            ScreenUtilities.clearScreen();
+            employees.add(new Employee(name, surname, idnp, birthDate, salary, job));
+
+            Utilities.clearScreen();
 
             System.out.println("INSERTED NEW EMPLOYEE:");
             int i = employees.size() - 1;
@@ -191,6 +207,7 @@ public class EmployeeDataManager {
             System.out.println("\tbirthdate: " + employees.get(i).getBirthDateFormatted());
             System.out.println("\tidnp: " + employees.get(i).getIdnp());
             System.out.println("\tsalary: $" + employees.get(i).getSalary());
+            System.out.println("\tjob: " + Utilities.firstLetterUpperCase(employees.get(i).getJob().toString()));
 
             System.out.println("Enter 1 to add more, or any value to go back...");
             moreEmployees = sc.nextLine();
@@ -199,6 +216,7 @@ public class EmployeeDataManager {
 
     }
 
+    //used for tabelation
     private static String generateMultipleChars(int n, char c) {
         StringBuilder str = new StringBuilder();
 
@@ -223,13 +241,13 @@ public class EmployeeDataManager {
     }
 
     public static void view() {
-        ScreenUtilities.clearScreen();
+        Utilities.clearScreen();
 
         if (employees.size() > 0) {
             System.out.println("EMPLOYEE LIST: \n");
         } else {
             System.out.println("NO EMPLOYEES FOUND!");
-            ScreenUtilities.enterAnyValueToContinue();
+            Utilities.enterAnyValueToContinue();
             return;
         }
 
@@ -254,11 +272,20 @@ public class EmployeeDataManager {
         int birthDateN = 10;
         int idnpN = 13;
         int salaryN = 10;
+        int jobN = 3;
         for (int i = 0; i < employeesSize; i++) {
-            if (employees.get(i).getName().length() > nameN) nameN = employees.get(i).getName().length();
-            if (employees.get(i).getSurname().length() > surnameN) surnameN = employees.get(i).getSurname().length();
-            if (String.valueOf(employees.get(i).getSalary()).length() > salaryN)
+            if (employees.get(i).getName().length() > nameN) {
+                nameN = employees.get(i).getName().length();
+            }
+            if (employees.get(i).getSurname().length() > surnameN) {
+                surnameN = employees.get(i).getSurname().length();
+            }
+            if (String.valueOf(employees.get(i).getSalary()).length() > salaryN) {
                 salaryN = String.valueOf(employees.get(i).getSalary()).length();
+            }
+            if (employees.get(i).getJob().toString().length() > jobN) {
+                jobN = employees.get(i).getJob().toString().length();
+            }
         }
 
         System.out.println(cornerTopLeft + generateMultipleChars(iN, lineX) + crossTDown // i
@@ -266,14 +293,16 @@ public class EmployeeDataManager {
                 + generateMultipleChars(surnameN, lineX) + crossTDown // surname
                 + generateMultipleChars(birthDateN, lineX) + crossTDown // birth date
                 + generateMultipleChars(idnpN, lineX) + crossTDown // idnp
-                + generateMultipleChars(salaryN, lineX) // salary
+                + generateMultipleChars(salaryN, lineX) + crossTDown // salary
+                + generateMultipleChars(jobN, lineX) // job
                 + cornerTopRight);
         System.out.println(lineY + insertWord(iN, "nr") + lineY
                 + insertWord(nameN, "name") + lineY
                 + insertWord(surnameN, "surname") + lineY
                 + insertWord(birthDateN, "birth date") + lineY
                 + insertWord(idnpN, "idnp") + lineY
-                + insertWord(salaryN, "salary ($)") + lineY);
+                + insertWord(salaryN, "salary ($)") + lineY
+                + insertWord(jobN, "job") + lineY);
 
         for (int i = 0; i < employeesSize; i++) {
             System.out.println(crossTRight + generateMultipleChars(iN, lineX) + cross // i
@@ -281,7 +310,8 @@ public class EmployeeDataManager {
                     + generateMultipleChars(surnameN, lineX) + cross // surname
                     + generateMultipleChars(birthDateN, lineX) + cross // birth date
                     + generateMultipleChars(idnpN, lineX) + cross // idnp
-                    + generateMultipleChars(salaryN, lineX) // salary
+                    + generateMultipleChars(salaryN, lineX) + cross // salary
+                    + generateMultipleChars(jobN, lineX) // job
                     + crossTLeft);
 
             System.out.println(lineY + insertWord(iN, String.valueOf(i + 1)) + lineY
@@ -289,7 +319,8 @@ public class EmployeeDataManager {
                     + insertWord(surnameN, employees.get(i).getSurname()) + lineY
                     + insertWord(birthDateN, employees.get(i).getBirthDateFormatted()) + lineY
                     + insertWord(idnpN, employees.get(i).getIdnp()) + lineY
-                    + insertWord(salaryN, String.valueOf(employees.get(i).getSalary())) + lineY);
+                    + insertWord(salaryN, String.valueOf(employees.get(i).getSalary())) + lineY
+                    + insertWord(jobN, (Utilities.firstLetterUpperCase(employees.get(i).getJob().toString()))) + lineY);
         }
 
         System.out.println(cornerBottomLeft + generateMultipleChars(iN, lineX) + crossTUp // i
@@ -297,10 +328,11 @@ public class EmployeeDataManager {
                 + generateMultipleChars(surnameN, lineX) + crossTUp // surname
                 + generateMultipleChars(birthDateN, lineX) + crossTUp // birth date
                 + generateMultipleChars(idnpN, lineX) + crossTUp // idnp
-                + generateMultipleChars(salaryN, lineX)  // salary
+                + generateMultipleChars(salaryN, lineX) + crossTUp // salary
+                + generateMultipleChars(jobN, lineX) // job
                 + cornerBottomRight);
 
-        ScreenUtilities.enterAnyValueToContinue();
+        Utilities.enterAnyValueToContinue();
     }
 
     //delete
@@ -313,7 +345,7 @@ public class EmployeeDataManager {
     }
 
     private static void deleteByIdnp() {
-        ScreenUtilities.clearScreen();
+        Utilities.clearScreen();
 
         System.out.print("Enter employee's idnp: ");
         String idnp = sc.nextLine();
@@ -335,47 +367,11 @@ public class EmployeeDataManager {
             System.out.println("No such employee with indicated idnp (" + idnp + ").");
         }
 
-        ScreenUtilities.enterAnyValueToContinue();
+        Utilities.enterAnyValueToContinue();
     }
 
-//    private static void deleteById() {
-//        ScreenUtilities.clearScreen();
-//
-//        int id;
-//        do {
-//            System.out.print("Enter employee's id: ");
-//            try {
-//                id = sc.nextInt();
-//                break;
-//            } catch (Exception e) {
-//                System.out.println("Invalid id format, try again (ex: 123)");
-//            } finally {
-//                // reset scanner's line so it work properly,
-//                // it doesn't reset on any scanner nextXxx() methods other than nextLine()
-//                sc.nextLine();
-//            }
-//        } while (true);
-//
-//        boolean idFound = false;
-//        int employeeIndex = -1;
-//        for (int i = 0; i < employees.size(); i++) {
-//            if (employees.get(i).getId() == id) {
-//                idFound = true;
-//                employeeIndex = i;
-//            }
-//        }
-//
-//        if (idFound) {
-//            deleteStatement(employeeIndex);
-//        } else {
-//            System.out.println("No such employee with indicated id (" + id + ").");
-//        }
-//
-//        ScreenUtilities.enterAnyValueToContinue();
-//    }
-
     private static void deleteByName() {
-        ScreenUtilities.clearScreen();
+        Utilities.clearScreen();
 
         System.out.print("Enter employee's name: ");
         String name = sc.nextLine();
@@ -393,7 +389,7 @@ public class EmployeeDataManager {
                 if (countFoundEmployees > 1) {
                     System.out.println("Too many employees with indicated name and surname " +
                             "(" + name + " " + surname + ")" + ", try other method.");
-                    ScreenUtilities.enterAnyValueToContinue();
+                    Utilities.enterAnyValueToContinue();
 
                     return;
                 }
@@ -408,20 +404,19 @@ public class EmployeeDataManager {
                     ", verify name and surname before entering");
         }
 
-        ScreenUtilities.enterAnyValueToContinue();
+        Utilities.enterAnyValueToContinue();
     }
 
     public static void delete() {
         //submenu
         int nav = -1;
         do {
-            ScreenUtilities.clearScreen();
+            Utilities.clearScreen();
 
             System.out.println("Select delete method:");
             System.out.println();
             System.out.println("\t1. delete by idnp");
             System.out.println("\t2. delete by name and surname");
-//            System.out.println("\t3. delete by id");
             System.out.println();
             System.out.println("\t0. back");
 
@@ -430,7 +425,7 @@ public class EmployeeDataManager {
                 nav = sc.nextInt();
             } catch (Exception e) {
                 System.out.println("\nInvalid format, try again (ex: 1)");
-                ScreenUtilities.enterAnyValueToContinue();
+                Utilities.enterAnyValueToContinue();
             } finally {
                 sc.nextLine();
             }
@@ -442,15 +437,12 @@ public class EmployeeDataManager {
                 case 2:
                     EmployeeDataManager.deleteByName();
                     break;
-//                case 3:
-//                    EmployeeDataManager.deleteById();
-//                    break;
                 case 0:
                     return;
 
                 default:
                     System.out.println("\nNo such submenu, try again (ex: 1)");
-                    ScreenUtilities.enterAnyValueToContinue();
+                    Utilities.enterAnyValueToContinue();
                     break;
             }
         } while (nav != 0);
@@ -468,14 +460,14 @@ public class EmployeeDataManager {
         System.out.print("name: " + employees.get(employeeIndex).getName() + " -> ");
         String name = sc.nextLine();
         name = name.trim();
-        name = firstLetterUpperCase(name);
+        name = Utilities.firstLetterUpperCase(name);
         //end name
 
         //surname
         System.out.print("surname: " + employees.get(employeeIndex).getSurname() + " -> ");
         String surname = sc.nextLine();
         surname = surname.trim();
-        surname = firstLetterUpperCase(surname);
+        surname = Utilities.firstLetterUpperCase(surname);
         //end surname
 
         //birthDate
@@ -491,12 +483,14 @@ public class EmployeeDataManager {
         System.out.print("salary: " + employees.get(employeeIndex).getSalary() + " -> ");
         double salary = enterSalary();
 
-//        int id = employees.size();
-        return new Employee(name, surname, idnp, birthDate, salary);
+        System.out.print("job: " + Utilities.firstLetterUpperCase(employees.get(employeeIndex).getJob().toString()) + " -> ");
+        Job job = enterJob();
+
+        return new Employee(name, surname, idnp, birthDate, salary, job);
     }
 
     private static void updateByIdnp() {
-        ScreenUtilities.clearScreen();
+        Utilities.clearScreen();
 
         System.out.print("Enter employee's idnp: ");
         String idnp = sc.nextLine();
@@ -518,11 +512,11 @@ public class EmployeeDataManager {
             System.out.println("No such employee with indicated idnp (" + idnp + ").");
         }
 
-        ScreenUtilities.enterAnyValueToContinue();
+        Utilities.enterAnyValueToContinue();
     }
 
     private static void updateByName() {
-        ScreenUtilities.clearScreen();
+        Utilities.clearScreen();
 
         System.out.print("Enter employee's name: ");
         String name = sc.nextLine();
@@ -539,7 +533,7 @@ public class EmployeeDataManager {
                 if (countFoundEmployees > 1) {
                     System.out.println("Too many employees with indicated name and surname " +
                             "(" + name + " " + surname + ")" + ", try other method.");
-                    ScreenUtilities.enterAnyValueToContinue();
+                    Utilities.enterAnyValueToContinue();
 
                     return;
                 }
@@ -555,55 +549,19 @@ public class EmployeeDataManager {
                     ", verify name and surname before entering");
         }
 
-        ScreenUtilities.enterAnyValueToContinue();
+        Utilities.enterAnyValueToContinue();
     }
-
-//    private static void updateById() {
-//        ScreenUtilities.clearScreen();
-//
-//        int id;
-//        do {
-//            System.out.print("Enter employee's id: ");
-//            try {
-//                id = sc.nextInt();
-//                break;
-//            } catch (Exception e) {
-//                System.out.println("Invalid id format, try again (ex: 123)");
-//            } finally {
-//                sc.nextLine();
-//            }
-//        } while (true);
-//
-//        boolean idFound = false;
-//        int employeeIndex = -1;
-//        for (int i = 0; i < employees.size(); i++) {
-//            if (employees.get(i).getId() == id) {
-//                idFound = true;
-//                employeeIndex = i;
-//            }
-//        }
-//
-//        if (idFound) {
-//            employees.set(employeeIndex, updateStatement(employeeIndex));
-//            System.out.println("\nUpdated successfully!\n");
-//        } else {
-//            System.out.println("No such employee with indicated id (" + id + ").");
-//        }
-//
-//        ScreenUtilities.enterAnyValueToContinue();
-//    }
 
     public static void update() {
         //submenu
         int nav = -1;
         do {
-            ScreenUtilities.clearScreen();
+            Utilities.clearScreen();
 
             System.out.println("Select update method:");
             System.out.println();
             System.out.println("\t1. update by idnp");
             System.out.println("\t2. update by name and surname");
-//            System.out.println("\t3. update by id");
             System.out.println();
             System.out.println("\t0. back");
 
@@ -612,7 +570,7 @@ public class EmployeeDataManager {
                 nav = sc.nextInt();
             } catch (Exception e) {
                 System.out.println("\nInvalid format, try again (ex: 1)");
-                ScreenUtilities.enterAnyValueToContinue();
+                Utilities.enterAnyValueToContinue();
             } finally {
                 sc.nextLine();
             }
@@ -624,15 +582,12 @@ public class EmployeeDataManager {
                 case 2:
                     EmployeeDataManager.updateByName();
                     break;
-//                case 3:
-//                    EmployeeDataManager.updateById();
-//                    break;
                 case 0:
                     return;
 
                 default:
                     System.out.println("\nNo such submenu, try again (ex: 1)");
-                    ScreenUtilities.enterAnyValueToContinue();
+                    Utilities.enterAnyValueToContinue();
                     break;
             }
         } while (nav != 0);
