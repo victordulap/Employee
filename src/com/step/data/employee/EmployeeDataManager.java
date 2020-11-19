@@ -15,11 +15,6 @@ public class EmployeeDataManager {
 
     private static List<Employee> employees = new ArrayList<>();
 
-//    static {
-//        employees.add(new Employee("Victor", "Dulap", "1234567890123", LocalDate.now(), 9999.0, Job.MANAGER));
-//        employees.add(new Employee("Grigore", "Anatolenato", "6789012345123", LocalDate.now(), 1299.0, Job.PROJECT_MANAGER));
-//    }
-
     private static LocalDate enterBirthDate() {
         LocalDate birthDate;
         do {
