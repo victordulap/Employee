@@ -17,6 +17,7 @@ public class Menu{
             System.out.println("\t2. insert");
             System.out.println("\t3. update");
             System.out.println("\t4. delete");
+            System.out.println("\t5. file");
             System.out.println();
             System.out.println("\t0. exit");
 
@@ -44,6 +45,9 @@ public class Menu{
                 case 4:
                     EmployeeDataManager.delete();
                     break;
+                case 5:
+                    fileMenu();
+                    break;
                 case 0:
                     System.exit(0);
                     break;
@@ -51,6 +55,50 @@ public class Menu{
                 default:
                     System.out.println("\nNo such submenu, try again (ex: 1)");
 //                    ScreenUtilities.wait(2000);
+                    Utilities.enterAnyValueToContinue();
+                    break;
+            }
+
+            Utilities.clearScreen();
+        } while (nav != 0);
+    }
+
+    private static void fileMenu() {
+        int nav = -1;
+
+        do {
+            Utilities.clearScreen();
+            System.out.println("FILE IMPORT/EXPORT");
+            System.out.println();
+            System.out.println("\t1. import employees");
+            System.out.println("\t2. export employees");
+            System.out.println();
+            System.out.println("\t0. exit");
+
+            System.out.print("\nenter submenu number: ");
+            try {
+                nav = sc.nextInt();
+            } catch (Exception e) {
+                System.out.println("\nInvalid format, try again (ex: 1)");
+                Utilities.enterAnyValueToContinue();
+            }
+            finally {
+                sc.nextLine();
+            }
+
+            switch (nav) {
+                case 1:
+                    EmployeeDataManager.importFromFile();
+                    break;
+                case 2:
+                    EmployeeDataManager.exportToFile();
+                    break;
+                case 0:
+                    break;
+
+
+                default:
+                    System.out.println("\nNo such submenu, try again (ex: 1)");
                     Utilities.enterAnyValueToContinue();
                     break;
             }

@@ -46,8 +46,12 @@ public class Employee {
         return idnp;
     }
 
-    public Job getJob() { return job; }
+    public Job getJob() {
+        return job;
+    }
 
     //    public int getId() { return id; }
     //getters end
+
+
 }
