@@ -88,10 +88,10 @@ public class Menu{
 
             switch (nav) {
                 case 1:
-                    EmployeeDataManager.importFromFile();
+                    EmployeeDataManager.importCSV();
                     break;
                 case 2:
-                    EmployeeDataManager.exportToFile();
+                    EmployeeDataManager.exportCSV();
                     break;
                 case 0:
                     break;

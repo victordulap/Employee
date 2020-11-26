@@ -1,10 +1,8 @@
 package com.step.data.employee;
 
 import com.step.data.menu.Utilities;
-import com.sun.xml.internal.ws.commons.xmlutil.Converter;
 
 import java.io.*;
-import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -13,7 +11,7 @@ public class EmployeeDataManager {
     private static final Scanner sc = new Scanner(System.in);
     protected static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
-    private static List<Employee> employees = new ArrayList<>();
+    protected static List<Employee> employees = new ArrayList<>();
 
     private static LocalDate enterBirthDate() {
         LocalDate birthDate;
@@ -404,6 +402,13 @@ public class EmployeeDataManager {
         Utilities.enterAnyValueToContinue();
     }
 
+    private static void deleteAllEmployees() {
+        Utilities.clearScreen();
+        employees.clear();
+        System.out.println("Deleted all employees");
+        Utilities.enterAnyValueToContinue();
+    }
+
     public static void delete() {
         //submenu
         int nav = -1;
@@ -414,6 +419,7 @@ public class EmployeeDataManager {
             System.out.println();
             System.out.println("\t1. delete by idnp");
             System.out.println("\t2. delete by name and surname");
+            System.out.println("\t3. delete all employees");
             System.out.println();
             System.out.println("\t0. back");
 
@@ -433,6 +439,9 @@ public class EmployeeDataManager {
                     break;
                 case 2:
                     EmployeeDataManager.deleteByName();
+                    break;
+                case 3:
+                    EmployeeDataManager.deleteAllEmployees();
                     break;
                 case 0:
                     return;
@@ -592,98 +601,13 @@ public class EmployeeDataManager {
     }
     //end update
 
-    //file
-    //import
-    public static void importFromFile() {
-//        String path = "../../../../../../../data/employees.txt"; // false
-//        String path = "..\\..\\..\\..\\..\\..\\..\\data\\employees.txt"; // false
-//        String path = "D:\\javaCodes\\projects\\Employee\\data\\employees.txt"; // works
-//        System.out.println(Paths.get(".").toAbsolutePath().normalize().toString());
-//        result ^: D:\javaCodes\projects\Employee
-        String path = ".\\data\\employees.txt"; // works
-        File file = new File(path);
-        if (!file.exists()) {
-            try {
-                boolean fileCreatedSuccessfully = file.createNewFile();
-                System.out.println("There was no file before, so a new file was created.");
-                Utilities.enterAnyValueToContinue();
-                return;
-            } catch (IOException e) {
-                System.out.println("Undetected error on file creating process.");
-            }
-        }
-
-        employees.clear();
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(file));
-
-            String line;
-            while ((line = reader.readLine()) != null) {
-//                System.out.println(line);
-                employees.add(convertFromCSV(line));
-            }
-        } catch (IOException e) {
-            System.out.println("Undetected error on file reading process.");
-        }
-
-        System.out.println("Imported successfully!");
-        Utilities.enterAnyValueToContinue();
-    }
-    //import end
-
-    //export
-    public static void exportToFile() {
-        String path = ".\\data\\employees.txt";
-        File file = new File(path);
-        if (!file.exists()) {
-            try {
-                boolean fileCreatedSuccessfully = file.createNewFile();
-                return;
-            } catch (IOException e) {
-                System.out.println("Undetected error on file creating process.");
-            }
-        }
-
-        try {
-            FileWriter writer = new FileWriter(file);
-
-            BufferedWriter bufferedWriter = new BufferedWriter(writer);
-
-            for (Employee employee: employees) {
-                bufferedWriter.write(convertToCSV(employee) + "\n");
-            }
-            bufferedWriter.close();
-        } catch (IOException ex) {
-            System.out.println("Error: " + ex.getMessage());
-        }
-
-        System.out.println("Exported successfully!");
-        Utilities.enterAnyValueToContinue();
-    }
-    //export end
-
-    //csv
-    private static String convertToCSV(Employee employee) {
-        return employee.getName() + "," +
-                employee.getSurname() + "," +
-                employee.getIdnp() + "," +
-                employee.getBirthDate() + "," +
-                employee.getSalary() + "," +
-                employee.getJob();
+    //data
+    public static void exportCSV() {
+        EmployeeDataReader.exportToFile();
     }
 
-    private static Employee convertFromCSV(String csvLine) {
-        String[] parameters = csvLine.split(",");
-
-        String name = parameters[0];
-        String surname = parameters[1];
-        String idnp = parameters[2];
-        LocalDate birthDate = LocalDate.parse(parameters[3]);
-        double salary = Double.parseDouble(parameters[4]);
-        Job job = Job.valueOf(parameters[5]);
-
-        return new Employee(name, surname, idnp, birthDate, salary, job);
+    public static void importCSV() {
+        EmployeeDataReader.importFromFile();
     }
-    //csv
-    // file end
+    //end data
 }
