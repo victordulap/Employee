@@ -603,10 +603,24 @@ public class EmployeeDataManager {
     //data
     public static void exportCSV() {
         EmployeeFileDataReader.exportToCSVFile();
+
+        System.out.println("Exported successfully!");
+        Utilities.enterAnyValueToContinue();
     }
 
     public static void importCSV() {
         EmployeeFileDataReader.importFromCSVFile();
+
+        System.out.println("Imported successfully!");
+        Utilities.enterAnyValueToContinue();
+    }
+
+    public static void exportSerialized() {
+        EmployeeFileDataReader.exportToSerializedFile();
+    }
+
+    public static void importSerialized() {
+        EmployeeFileDataReader.importFromSerializedFile();
     }
     //end data
 }

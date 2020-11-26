@@ -1,6 +1,8 @@
 package com.step.data.menu;
 
+import com.step.data.employee.Employee;
 import com.step.data.employee.EmployeeDataManager;
+import com.step.data.employee.EmployeeFileDataReader;
 
 import java.util.Scanner;
 
@@ -11,7 +13,8 @@ public class Menu{
         int nav = -1;
 
         System.out.println("LOADING DATA...");
-        EmployeeDataManager.importCSV();
+//        EmployeeDataManager.importCSV();
+        EmployeeDataManager.importSerialized();
         System.out.println("DONE!");
 
         Utilities.clearScreen();
@@ -55,12 +58,24 @@ public class Menu{
                     fileMenu();
                     break;
                 case 0:
+                    Utilities.clearScreen();
+
+                    System.out.print("Type yes or 1 to save data: ");
+                    String str = sc.nextLine();
+                    boolean toSaveInCSV = str.equalsIgnoreCase("yes") || str.equalsIgnoreCase("1");
+
+                    if(toSaveInCSV) {
+                        System.out.println("SAVING DATA");
+                        EmployeeDataManager.exportCSV();
+                    }
+                    EmployeeDataManager.exportSerialized();
+
+                    System.out.println("Application exited");
                     System.exit(0);
                     break;
 
                 default:
                     System.out.println("\nNo such submenu, try again (ex: 1)");
-//                    ScreenUtilities.wait(2000);
                     Utilities.enterAnyValueToContinue();
                     break;
             }

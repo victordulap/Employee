@@ -6,7 +6,7 @@ import java.io.*;
 import java.time.LocalDate;
 
 public class EmployeeFileDataReader {
-    //import
+    //csv
     protected static void importFromCSVFile() {
         String path = ".\\data\\employees.txt"; // works
         File file = new File(path);
@@ -33,13 +33,8 @@ public class EmployeeFileDataReader {
         } catch (IOException e) {
             System.out.println("Undetected error on file reading process.");
         }
-
-        System.out.println("Imported successfully!");
-        Utilities.enterAnyValueToContinue();
     }
-    //import end
 
-    //export
     protected static void exportToCSVFile() {
         String path = ".\\data\\employees.txt";
         File file = new File(path);
@@ -58,20 +53,15 @@ public class EmployeeFileDataReader {
 
             BufferedWriter bufferedWriter = new BufferedWriter(writer);
 
-            for (Employee employee: EmployeeDataManager.employees) {
+            for (Employee employee : EmployeeDataManager.employees) {
                 bufferedWriter.write(convertFromEmployeeToCSV(employee) + "\n");
             }
             bufferedWriter.close();
         } catch (IOException ex) {
             System.out.println("Error: " + ex.getMessage());
         }
-
-        System.out.println("Exported successfully!");
-        Utilities.enterAnyValueToContinue();
     }
-    //export end
 
-    //csv
     private static String convertFromEmployeeToCSV(Employee employee) {
         return employee.getName() + "," +
                 employee.getSurname() + "," +
@@ -93,5 +83,74 @@ public class EmployeeFileDataReader {
 
         return new Employee(name, surname, idnp, birthDate, salary, job);
     }
-    //csv
+    //end csv
+
+    //serializing
+    protected static void importFromSerializedFile() {
+        try {
+            String path = ".\\data\\employees.dat"; // works
+            File file = new File(path);
+            if (!file.exists()) {
+                try {
+                    boolean fileCreatedSuccessfully = file.createNewFile();
+                    return;
+                } catch (IOException e) {
+                    System.out.println("Undetected error on file creating process.");
+                }
+            }
+
+            FileInputStream fileInputStream = new FileInputStream(file);
+            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+
+            EmployeeDataManager.employees.clear();
+            while (true) {
+                try {
+                    Object o = objectInputStream.readObject();
+                    if (o == null) {
+                        break;
+                    }
+
+                    EmployeeDataManager.employees.add((Employee) o);
+                } catch (Exception e) {
+                    // eof
+                    break;
+                }
+            }
+
+            objectInputStream.close();
+            fileInputStream.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    protected static void exportToSerializedFile() {
+        try {
+            String path = ".\\data\\employees.dat"; // works
+            File file = new File(path);
+            if (!file.exists()) {
+                try {
+                    boolean fileCreatedSuccessfully = file.createNewFile();
+                    System.out.println("There was no file before, so a new file was created.");
+                    Utilities.enterAnyValueToContinue();
+                    return;
+                } catch (IOException e) {
+                    System.out.println("Undetected error on file creating process.");
+                }
+            }
+
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+
+            for (Employee employee : EmployeeDataManager.employees) {
+                objectOutputStream.writeObject(employee);
+            }
+
+            objectOutputStream.close();
+            fileOutputStream.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+    //end serializing
 }

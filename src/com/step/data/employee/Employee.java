@@ -2,9 +2,12 @@ package com.step.data.employee;
 
 import com.sun.scenario.effect.impl.prism.PrImage;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Employee {
+public class Employee implements Serializable {
+    public static final long serialVersionUID = 1L;
+
     private String name;
     private String surname;
     private String idnp;
