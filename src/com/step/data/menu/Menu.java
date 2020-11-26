@@ -10,6 +10,12 @@ public class Menu{
     public static void showMenu() {
         int nav = -1;
 
+        System.out.println("LOADING DATA...");
+        EmployeeDataManager.importCSV();
+        System.out.println("DONE!");
+
+        Utilities.clearScreen();
+
         do {
             System.out.println("EMPLOYEE MANAGEMENT");
             System.out.println();

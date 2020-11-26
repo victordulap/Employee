@@ -8,10 +8,9 @@ public class Utilities {
     public static void clearScreen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
-
         //not working ^
 
-        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
     }
 
     public static void wait(int milliseconds) {

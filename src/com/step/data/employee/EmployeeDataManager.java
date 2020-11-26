@@ -2,7 +2,6 @@ package com.step.data.employee;
 
 import com.step.data.menu.Utilities;
 
-import java.io.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -211,7 +210,7 @@ public class EmployeeDataManager {
 
     }
 
-    //used for tabelation
+    //used for tabulation
     private static String generateMultipleChars(int n, char c) {
         StringBuilder str = new StringBuilder();
 
@@ -223,11 +222,11 @@ public class EmployeeDataManager {
     }
 
     // inserts word with n spaces needed
-    private static String insertWord(int maxLenght, String word) {
+    private static String insertWord(int maxLength, String word) {
         StringBuilder str = new StringBuilder();
         str.append(word);
 
-        int n = maxLenght - word.length();
+        int n = maxLength - word.length();
         for (int i = 0; i < n; i++) {
             str.append(' ');
         }
@@ -603,11 +602,11 @@ public class EmployeeDataManager {
 
     //data
     public static void exportCSV() {
-        EmployeeDataReader.exportToFile();
+        EmployeeFileDataReader.exportToCSVFile();
     }
 
     public static void importCSV() {
-        EmployeeDataReader.importFromFile();
+        EmployeeFileDataReader.importFromCSVFile();
     }
     //end data
 }

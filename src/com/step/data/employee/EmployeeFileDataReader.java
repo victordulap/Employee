@@ -5,10 +5,9 @@ import com.step.data.menu.Utilities;
 import java.io.*;
 import java.time.LocalDate;
 
-public class EmployeeDataReader {
-    //file
+public class EmployeeFileDataReader {
     //import
-    protected static void importFromFile() {
+    protected static void importFromCSVFile() {
         String path = ".\\data\\employees.txt"; // works
         File file = new File(path);
         if (!file.exists()) {
@@ -41,7 +40,7 @@ public class EmployeeDataReader {
     //import end
 
     //export
-    protected static void exportToFile() {
+    protected static void exportToCSVFile() {
         String path = ".\\data\\employees.txt";
         File file = new File(path);
         if (!file.exists()) {
@@ -95,5 +94,4 @@ public class EmployeeDataReader {
         return new Employee(name, surname, idnp, birthDate, salary, job);
     }
     //csv
-    // file end
 }
