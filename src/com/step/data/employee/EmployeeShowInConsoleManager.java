@@ -3,9 +3,108 @@ package com.step.data.employee;
 import com.step.data.menu.Utilities;
 
 import java.time.LocalDate;
+import java.util.Scanner;
 
 public class EmployeeShowInConsoleManager {
-    public static void insert() {
+    private EmployeeManager em = new EmployeeManager();
+    protected static final Scanner sc = new Scanner(System.in);
+
+    public static void view() {
+        Utilities.clearScreen();
+
+        if (EmployeeManager.employees.size() > 0) {
+            System.out.println("EMPLOYEE LIST: \n");
+        } else {
+            System.out.println("NO EMPLOYEES FOUND!");
+            Utilities.enterAnyValueToContinue();
+            return;
+        }
+
+        char cornerTopLeft = '\u2554';
+        char cornerTopRight = '\u2557';
+        char cornerBottomLeft = '\u255A';
+        char cornerBottomRight = '\u255D';
+        char lineX = '\u2550';
+        char lineY = '\u2551';
+        char cross = '\u256C';
+        char crossTDown = '\u2566';
+        char crossTUp = '\u2569';
+        char crossTLeft = '\u2563';
+        char crossTRight = '\u2560';
+
+        int employeesSize = EmployeeManager.employees.size();
+//        int iN = 3, nameN = 15, surnameN = 15, birthDateN = 10, idnpN = 13, salaryN = 10;
+        int iN = employeesSize > 1 ? employeesSize : 2;
+
+        int nameN = 4;
+        int surnameN = 7;
+        int birthDateN = 10;
+        int idnpN = 13;
+        int salaryN = 10;
+        int jobN = 3;
+        for (int i = 0; i < employeesSize; i++) {
+            if (EmployeeManager.employees.get(i).getName().length() > nameN) {
+                nameN = EmployeeManager.employees.get(i).getName().length();
+            }
+            if (EmployeeManager.employees.get(i).getSurname().length() > surnameN) {
+                surnameN = EmployeeManager.employees.get(i).getSurname().length();
+            }
+            if (String.valueOf(EmployeeManager.employees.get(i).getSalary()).length() > salaryN) {
+                salaryN = String.valueOf(EmployeeManager.employees.get(i).getSalary()).length();
+            }
+            if (EmployeeManager.employees.get(i).getJob().toString().length() > jobN) {
+                jobN = EmployeeManager.employees.get(i).getJob().toString().length();
+            }
+        }
+
+        System.out.println(cornerTopLeft + Utilities.generateMultipleChars(iN, lineX) + crossTDown // i
+                + Utilities.generateMultipleChars(nameN, lineX) + crossTDown //name
+                + Utilities.generateMultipleChars(surnameN, lineX) + crossTDown // surname
+                + Utilities.generateMultipleChars(birthDateN, lineX) + crossTDown // birth date
+                + Utilities.generateMultipleChars(idnpN, lineX) + crossTDown // idnp
+                + Utilities.generateMultipleChars(salaryN, lineX) + crossTDown // salary
+                + Utilities.generateMultipleChars(jobN, lineX) // job
+                + cornerTopRight);
+        System.out.println(lineY + Utilities.insertWordWithNSpaces(iN, "nr") + lineY
+                + Utilities.insertWordWithNSpaces(nameN, "name") + lineY
+                + Utilities.insertWordWithNSpaces(surnameN, "surname") + lineY
+                + Utilities.insertWordWithNSpaces(birthDateN, "birth date") + lineY
+                + Utilities.insertWordWithNSpaces(idnpN, "idnp") + lineY
+                + Utilities.insertWordWithNSpaces(salaryN, "salary ($)") + lineY
+                + Utilities.insertWordWithNSpaces(jobN, "job") + lineY);
+
+        for (int i = 0; i < employeesSize; i++) {
+            System.out.println(crossTRight + Utilities.generateMultipleChars(iN, lineX) + cross // i
+                    + Utilities.generateMultipleChars(nameN, lineX) + cross //name
+                    + Utilities.generateMultipleChars(surnameN, lineX) + cross // surname
+                    + Utilities.generateMultipleChars(birthDateN, lineX) + cross // birth date
+                    + Utilities.generateMultipleChars(idnpN, lineX) + cross // idnp
+                    + Utilities.generateMultipleChars(salaryN, lineX) + cross // salary
+                    + Utilities.generateMultipleChars(jobN, lineX) // job
+                    + crossTLeft);
+
+            System.out.println(lineY + Utilities.insertWordWithNSpaces(iN, String.valueOf(i + 1)) + lineY
+                    + Utilities.insertWordWithNSpaces(nameN, EmployeeManager.employees.get(i).getName()) + lineY
+                    + Utilities.insertWordWithNSpaces(surnameN, EmployeeManager.employees.get(i).getSurname()) + lineY
+                    + Utilities.insertWordWithNSpaces(birthDateN, EmployeeManager.employees.get(i).getBirthDateFormatted()) + lineY
+                    + Utilities.insertWordWithNSpaces(idnpN, EmployeeManager.employees.get(i).getIdnp()) + lineY
+                    + Utilities.insertWordWithNSpaces(salaryN, String.valueOf(EmployeeManager.employees.get(i).getSalary())) + lineY
+                    + Utilities.insertWordWithNSpaces(jobN, (Utilities.firstLetterUpperCase(EmployeeManager.employees.get(i).getJob().toString()))) + lineY);
+        }
+
+        System.out.println(cornerBottomLeft + Utilities.generateMultipleChars(iN, lineX) + crossTUp // i
+                + Utilities.generateMultipleChars(nameN, lineX) + crossTUp //name
+                + Utilities.generateMultipleChars(surnameN, lineX) + crossTUp // surname
+                + Utilities.generateMultipleChars(birthDateN, lineX) + crossTUp // birth date
+                + Utilities.generateMultipleChars(idnpN, lineX) + crossTUp // idnp
+                + Utilities.generateMultipleChars(salaryN, lineX) + crossTUp // salary
+                + Utilities.generateMultipleChars(jobN, lineX) // job
+                + cornerBottomRight);
+
+        Utilities.enterAnyValueToContinue();
+    }
+
+    public void insert() {
         String moreEmployees;
 
         do {
@@ -34,7 +133,7 @@ public class EmployeeShowInConsoleManager {
             System.out.print("Enter job: ");
             Job job = EmployeeDataChecker.enterJob();
 
-            EmployeeManager.insert(new Employee(name, surname, idnp, birthDate, salary, job));
+            em.insert(new Employee(name, surname, idnp, birthDate, salary, job));
 
             Utilities.clearScreen();
 
@@ -100,7 +199,7 @@ public class EmployeeShowInConsoleManager {
         //submenu
     }
 
-    public static void update() {
+    public void update() {
         //submenu
         int nav = -1;
         do {
@@ -125,10 +224,10 @@ public class EmployeeShowInConsoleManager {
 
             switch (nav) {
                 case 1:
-                    EmployeeManager.updateByIdnp();
+                    this.updateByIdnp();
                     break;
                 case 2:
-                    EmployeeManager.updateByName();
+                    this.updateByName();
                     break;
                 case 0:
                     return;
@@ -140,5 +239,46 @@ public class EmployeeShowInConsoleManager {
             }
         } while (nav != 0);
         //submenu
+    }
+
+    private void updateByIdnp() {
+        Utilities.clearScreen();
+
+        System.out.print("Enter employee's idnp: ");
+        String idnp = sc.nextLine();
+        idnp = idnp.trim();
+
+        //    V execute update
+        if(em.updateByIdnp(idnp)) {
+                        System.out.println("\nUpdated successfully!\n");
+        } else {
+            System.out.println("No such employee with indicated idnp (" + idnp + ").");
+        }
+
+        Utilities.enterAnyValueToContinue();
+    }
+
+    private void updateByName() {
+        Utilities.clearScreen();
+
+        System.out.print("Enter employee's name: ");
+        String name = sc.nextLine();
+        name = name.trim();
+        System.out.print("Enter employee's surname: ");
+        String surname = sc.nextLine();
+        surname = surname.trim();
+
+        int resultOfUpdate = em.updateByName(name, surname);
+        if(resultOfUpdate == 1) {
+            System.out.println("\nUpdated successfully!\n");
+        } else if (resultOfUpdate == 0){
+            System.out.println("No such employee with indicated name and surname (" + name + " " + surname + ")" +
+                    ", verify name and surname before entering");
+        } else {
+            System.out.println("Too many employees with indicated name and surname " +
+                    "(" + name + " " + surname + ")" + ", try other method.");
+        }
+
+        Utilities.enterAnyValueToContinue();
     }
 }

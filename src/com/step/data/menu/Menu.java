@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 public class Menu{
     private static Scanner sc = new Scanner(System.in);
+    private static EmployeeShowInConsoleManager em = new EmployeeShowInConsoleManager();
 
     public static void showMenu() {
         int nav = -1;
@@ -42,13 +43,13 @@ public class Menu{
 
             switch (nav) {
                 case 1:
-                    EmployeeManager.view();
+                    EmployeeShowInConsoleManager.view();
                     break;
                 case 2:
-                    EmployeeShowInConsoleManager.insert();
+                    em.insert();
                     break;
                 case 3:
-                    EmployeeShowInConsoleManager.update();
+                    em.update();
                     break;
                 case 4:
                     EmployeeShowInConsoleManager.delete();
