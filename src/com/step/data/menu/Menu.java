@@ -1,6 +1,7 @@
 package com.step.data.menu;
 
 import com.step.data.employee.EmployeeManager;
+import com.step.data.employee.EmployeeShowInConsoleManager;
 
 import java.util.Scanner;
 
@@ -44,13 +45,13 @@ public class Menu{
                     EmployeeManager.view();
                     break;
                 case 2:
-                    EmployeeManager.insert();
+                    EmployeeShowInConsoleManager.insert();
                     break;
                 case 3:
-                    EmployeeManager.update();
+                    EmployeeShowInConsoleManager.update();
                     break;
                 case 4:
-                    EmployeeManager.delete();
+                    EmployeeShowInConsoleManager.delete();
                     break;
                 case 5:
                     fileMenu();

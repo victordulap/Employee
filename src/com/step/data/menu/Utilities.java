@@ -38,4 +38,27 @@ public class Utilities {
         return str;
     }
 
+    //used for tabulation
+    public static String generateMultipleChars(int n, char c) {
+        StringBuilder str = new StringBuilder();
+
+        for (int i = 0; i < n; i++) {
+            str.append(c);
+        }
+
+        return str.toString();
+    }
+
+    // inserts word with n spaces needed
+    public static String insertWordWithNSpaces(int maxLength, String word) {
+        StringBuilder str = new StringBuilder();
+        str.append(word);
+
+        int n = maxLength - word.length();
+        for (int i = 0; i < n; i++) {
+            str.append(' ');
+        }
+
+        return String.valueOf(str);
+    }
 }

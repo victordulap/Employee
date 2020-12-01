@@ -6,6 +6,8 @@ public interface IEmployeeManager {
     public int insert(Employee e);
     public int update(Employee e);
     public List<Employee> read();
-    public int delete(Employee e);
+    public int deleteByIdnp(Employee e);
+    public void deleteByName();
+    public void deleteAllEmployees();
     public void close();
 }
