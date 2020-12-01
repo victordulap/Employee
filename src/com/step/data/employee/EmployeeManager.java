@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-public class EmployeeDataManager {
+public class EmployeeManager {
     private static final Scanner sc = new Scanner(System.in);
     protected static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
@@ -434,13 +434,13 @@ public class EmployeeDataManager {
 
             switch (nav) {
                 case 1:
-                    EmployeeDataManager.deleteByIdnp();
+                    EmployeeManager.deleteByIdnp();
                     break;
                 case 2:
-                    EmployeeDataManager.deleteByName();
+                    EmployeeManager.deleteByName();
                     break;
                 case 3:
-                    EmployeeDataManager.deleteAllEmployees();
+                    EmployeeManager.deleteAllEmployees();
                     break;
                 case 0:
                     return;
@@ -582,10 +582,10 @@ public class EmployeeDataManager {
 
             switch (nav) {
                 case 1:
-                    EmployeeDataManager.updateByIdnp();
+                    EmployeeManager.updateByIdnp();
                     break;
                 case 2:
-                    EmployeeDataManager.updateByName();
+                    EmployeeManager.updateByName();
                     break;
                 case 0:
                     return;

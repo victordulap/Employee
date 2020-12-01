@@ -1,7 +1,5 @@
 package com.step.data.employee;
 
-import com.sun.scenario.effect.impl.prism.PrImage;
-
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -42,7 +40,7 @@ public class Employee implements Serializable {
     }
 
     public String getBirthDateFormatted() {
-        return birthDate.format(EmployeeDataManager.dateTimeFormatter);
+        return birthDate.format(EmployeeManager.dateTimeFormatter);
     }
 
     protected String getIdnp() {

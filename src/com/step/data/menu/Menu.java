@@ -1,8 +1,6 @@
 package com.step.data.menu;
 
-import com.step.data.employee.Employee;
-import com.step.data.employee.EmployeeDataManager;
-import com.step.data.employee.EmployeeFileDataReader;
+import com.step.data.employee.EmployeeManager;
 
 import java.util.Scanner;
 
@@ -14,7 +12,7 @@ public class Menu{
 
         System.out.println("LOADING DATA...");
 //        EmployeeDataManager.importCSV();
-        EmployeeDataManager.importSerialized();
+        EmployeeManager.importSerialized();
         System.out.println("DONE!");
 
         Utilities.clearScreen();
@@ -43,16 +41,16 @@ public class Menu{
 
             switch (nav) {
                 case 1:
-                    EmployeeDataManager.view();
+                    EmployeeManager.view();
                     break;
                 case 2:
-                    EmployeeDataManager.insert();
+                    EmployeeManager.insert();
                     break;
                 case 3:
-                    EmployeeDataManager.update();
+                    EmployeeManager.update();
                     break;
                 case 4:
-                    EmployeeDataManager.delete();
+                    EmployeeManager.delete();
                     break;
                 case 5:
                     fileMenu();
@@ -66,9 +64,9 @@ public class Menu{
 
                     if(toSaveInCSV) {
                         System.out.println("SAVING DATA");
-                        EmployeeDataManager.exportCSV();
+                        EmployeeManager.exportCSV();
                     }
-                    EmployeeDataManager.exportSerialized();
+                    EmployeeManager.exportSerialized();
 
                     System.out.println("Application exited");
                     System.exit(0);
@@ -109,10 +107,10 @@ public class Menu{
 
             switch (nav) {
                 case 1:
-                    EmployeeDataManager.importCSV();
+                    EmployeeManager.importCSV();
                     break;
                 case 2:
-                    EmployeeDataManager.exportCSV();
+                    EmployeeManager.exportCSV();
                     break;
                 case 0:
                     break;

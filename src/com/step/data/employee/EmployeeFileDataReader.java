@@ -21,14 +21,14 @@ public class EmployeeFileDataReader {
             }
         }
 
-        EmployeeDataManager.employees.clear();
+        EmployeeManager.employees.clear();
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
 
             String line;
             while ((line = reader.readLine()) != null) {
 //                System.out.println(line);
-                EmployeeDataManager.employees.add(convertFromCSVToEmployee(line));
+                EmployeeManager.employees.add(convertFromCSVToEmployee(line));
             }
         } catch (IOException e) {
             System.out.println("Undetected error on file reading process.");
@@ -53,7 +53,7 @@ public class EmployeeFileDataReader {
 
             BufferedWriter bufferedWriter = new BufferedWriter(writer);
 
-            for (Employee employee : EmployeeDataManager.employees) {
+            for (Employee employee : EmployeeManager.employees) {
                 bufferedWriter.write(convertFromEmployeeToCSV(employee) + "\n");
             }
             bufferedWriter.close();
@@ -102,7 +102,7 @@ public class EmployeeFileDataReader {
             FileInputStream fileInputStream = new FileInputStream(file);
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
 
-            EmployeeDataManager.employees.clear();
+            EmployeeManager.employees.clear();
             while (true) {
                 try {
                     Object o = objectInputStream.readObject();
@@ -110,7 +110,7 @@ public class EmployeeFileDataReader {
                         break;
                     }
 
-                    EmployeeDataManager.employees.add((Employee) o);
+                    EmployeeManager.employees.add((Employee) o);
                 } catch (Exception e) {
                     // eof
                     break;
@@ -142,7 +142,7 @@ public class EmployeeFileDataReader {
             FileOutputStream fileOutputStream = new FileOutputStream(file);
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
 
-            for (Employee employee : EmployeeDataManager.employees) {
+            for (Employee employee : EmployeeManager.employees) {
                 objectOutputStream.writeObject(employee);
             }
 
