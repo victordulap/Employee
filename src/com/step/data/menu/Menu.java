@@ -52,7 +52,7 @@ public class Menu{
                     em.update();
                     break;
                 case 4:
-                    EmployeeShowInConsoleManager.delete();
+                    em.delete();
                     break;
                 case 5:
                     fileMenu();

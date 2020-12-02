@@ -153,7 +153,7 @@ public class EmployeeShowInConsoleManager {
 
     }
 
-    public static void delete() {
+    public void delete() {
         //submenu
         int nav = -1;
         do {
@@ -163,7 +163,6 @@ public class EmployeeShowInConsoleManager {
             System.out.println();
             System.out.println("\t1. delete by idnp");
             System.out.println("\t2. delete by name and surname");
-            System.out.println("\t3. delete all employees");
             System.out.println();
             System.out.println("\t0. back");
 
@@ -179,13 +178,10 @@ public class EmployeeShowInConsoleManager {
 
             switch (nav) {
                 case 1:
-                    EmployeeManager.deleteByIdnp();
+                    this.deleteByIdnp();
                     break;
                 case 2:
-                    EmployeeManager.deleteByName();
-                    break;
-                case 3:
-                    EmployeeManager.deleteAllEmployees();
+//                    EmployeeManager.deleteByName();
                     break;
                 case 0:
                     return;
@@ -278,6 +274,36 @@ public class EmployeeShowInConsoleManager {
             System.out.println("Too many employees with indicated name and surname " +
                     "(" + name + " " + surname + ")" + ", try other method.");
         }
+
+        Utilities.enterAnyValueToContinue();
+    }
+
+    private void deleteMessage(Employee employee) {
+        System.out.println("Employee " + employee.getName()
+                + " " + employee.getSurname() /*+ " (id: "
+                + employees.get(employeeIndex).getId() + " / idnp: "*/
+                + " (idnp : " + employee.getIdnp() + ") was removed.");
+    }
+
+    private void deleteByIdnp() {
+        Utilities.clearScreen();
+
+        System.out.print("Enter employee's idnp: ");
+        String idnp = sc.nextLine();
+        idnp = idnp.trim();
+
+        int employeeIndex = em.findByIdnp(idnp);
+        if(employeeIndex >= 0) {
+            Employee employeeToDelete = EmployeeManager.employees.get(employeeIndex);
+
+            if (em.delete(employeeIndex)) {
+                deleteMessage(employeeToDelete);
+            }
+        } else {
+            System.out.println("No such employee with indicated idnp (" + idnp + ").");
+        }
+
+
 
         Utilities.enterAnyValueToContinue();
     }
