@@ -181,7 +181,7 @@ public class EmployeeShowInConsoleManager {
                     this.deleteByIdnp();
                     break;
                 case 2:
-//                    EmployeeManager.deleteByName();
+                    this.deleteByNameAndSurname();
                     break;
                 case 0:
                     return;
@@ -193,6 +193,36 @@ public class EmployeeShowInConsoleManager {
             }
         } while (nav != 0);
         //submenu
+    }
+
+    public Employee updateStatement(int employeeIndex) {
+        System.out.println("Editing employee " + EmployeeManager.employees.get(employeeIndex).getName()
+                + " " + EmployeeManager.employees.get(employeeIndex).getSurname() /*+ " (id: "
+                + employees.get(employeeIndex).getId() + " / idnp: "*/
+                + " (idnp: " + EmployeeManager.employees.get(employeeIndex).getIdnp() + ")...");
+        System.out.print("name: " + EmployeeManager.employees.get(employeeIndex).getName() + " -> ");
+        String name = sc.nextLine();
+        name = name.trim();
+        name = Utilities.firstLetterUpperCase(name);
+
+        System.out.print("surname: " + EmployeeManager.employees.get(employeeIndex).getSurname() + " -> ");
+        String surname = sc.nextLine();
+        surname = surname.trim();
+        surname = Utilities.firstLetterUpperCase(surname);
+
+        System.out.print("birth date: " + EmployeeManager.employees.get(employeeIndex).getBirthDateFormatted() + " -> ");
+        LocalDate birthDate = EmployeeDataChecker.enterBirthDate();
+
+        System.out.print("idnp: " + EmployeeManager.employees.get(employeeIndex).getIdnp() + " -> ");
+        String idnp = EmployeeDataChecker.enterIdnp(EmployeeManager.employees.get(employeeIndex).getIdnp());
+
+        System.out.print("salary: " + EmployeeManager.employees.get(employeeIndex).getSalary() + " -> ");
+        double salary = EmployeeDataChecker.enterSalary();
+
+        System.out.print("job: " + Utilities.firstLetterUpperCase(EmployeeManager.employees.get(employeeIndex).getJob().toString()) + " -> ");
+        Job job = EmployeeDataChecker.enterJob();
+
+        return new Employee(name, surname, idnp, birthDate, salary, job);
     }
 
     public void update() {
@@ -223,7 +253,7 @@ public class EmployeeShowInConsoleManager {
                     this.updateByIdnp();
                     break;
                 case 2:
-                    this.updateByName();
+                    this.updateByNameAndSurname();
                     break;
                 case 0:
                     return;
@@ -244,9 +274,11 @@ public class EmployeeShowInConsoleManager {
         String idnp = sc.nextLine();
         idnp = idnp.trim();
 
-        //    V execute update
-        if(em.updateByIdnp(idnp)) {
-                        System.out.println("\nUpdated successfully!\n");
+        int employeeIndex = em.findByIdnp(idnp);
+        if(employeeIndex >= 0) {
+            Employee newEmployee = this.updateStatement(employeeIndex);
+            em.update(employeeIndex, newEmployee);
+            System.out.println("\nUpdated successfully!\n");
         } else {
             System.out.println("No such employee with indicated idnp (" + idnp + ").");
         }
@@ -254,7 +286,7 @@ public class EmployeeShowInConsoleManager {
         Utilities.enterAnyValueToContinue();
     }
 
-    private void updateByName() {
+    private void updateByNameAndSurname() {
         Utilities.clearScreen();
 
         System.out.print("Enter employee's name: ");
@@ -264,10 +296,12 @@ public class EmployeeShowInConsoleManager {
         String surname = sc.nextLine();
         surname = surname.trim();
 
-        int resultOfUpdate = em.updateByName(name, surname);
-        if(resultOfUpdate == 1) {
+        int employeeIndex = em.findByNameAndSurname(name,surname);
+        if(employeeIndex >= 0) {
+            Employee newEmployee = this.updateStatement(employeeIndex);
+            em.update(employeeIndex, newEmployee);
             System.out.println("\nUpdated successfully!\n");
-        } else if (resultOfUpdate == 0){
+        } else if (employeeIndex == -1) {
             System.out.println("No such employee with indicated name and surname (" + name + " " + surname + ")" +
                     ", verify name and surname before entering");
         } else {
@@ -303,7 +337,33 @@ public class EmployeeShowInConsoleManager {
             System.out.println("No such employee with indicated idnp (" + idnp + ").");
         }
 
+        Utilities.enterAnyValueToContinue();
+    }
 
+    private void deleteByNameAndSurname() {
+        Utilities.clearScreen();
+
+        System.out.print("Enter employee's name: ");
+        String name = sc.nextLine();
+        name = name.trim();
+        System.out.print("Enter employee's surname: ");
+        String surname = sc.nextLine();
+        surname = surname.trim();
+
+        int employeeIndex = em.findByNameAndSurname(name, surname);
+        if(employeeIndex >= 0) {
+            Employee employeeToDelete = EmployeeManager.employees.get(employeeIndex);
+
+            if (em.delete(employeeIndex)) {
+                deleteMessage(employeeToDelete);
+            }
+        } else if(employeeIndex == -2) {
+            System.out.println("Too many employees with indicated name and surname " +
+                    "(" + name + " " + surname + ")" + ", try other method.");
+        } else {
+            System.out.println("No such employee with indicated name and surname (" + name + " " + surname + ")" +
+                    ", verify name and surname before entering");
+        }
 
         Utilities.enterAnyValueToContinue();
     }

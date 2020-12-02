@@ -51,6 +51,33 @@ public class Employee implements Serializable {
         return job;
     }
 
-    //    public int getId() { return id; }
-    //getters end
+    // end getters
+
+    // setters
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public void setIdnp(String idnp) {
+        this.idnp = idnp;
+    }
+
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public void setSalary(double salary) {
+        this.salary = salary;
+    }
+
+    public void setJob(Job job) {
+        this.job = job;
+    }
+
+    // end setters
 }
