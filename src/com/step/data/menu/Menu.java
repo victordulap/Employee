@@ -1,5 +1,6 @@
 package com.step.data.menu;
 
+import com.step.data.employee.Employee;
 import com.step.data.employee.EmployeeManager;
 import com.step.data.employee.EmployeeShowInConsoleManager;
 
@@ -15,6 +16,7 @@ public class Menu{
         System.out.println("LOADING DATA...");
 //        EmployeeDataManager.importCSV();
         EmployeeManager.importSerialized();
+        Employee.readLastIdFromFile();
         System.out.println("DONE!");
 
         Utilities.clearScreen();
@@ -69,6 +71,7 @@ public class Menu{
                         EmployeeManager.exportCSV();
                     }
                     EmployeeManager.exportSerialized();
+                    Employee.saveLastIdToFile();
 
                     System.out.println("Application exited");
                     System.exit(0);

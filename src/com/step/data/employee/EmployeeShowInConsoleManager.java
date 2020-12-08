@@ -33,9 +33,9 @@ public class EmployeeShowInConsoleManager {
         char crossTRight = '\u2560';
 
         int employeesSize = EmployeeManager.employees.size();
-//        int iN = 3, nameN = 15, surnameN = 15, birthDateN = 10, idnpN = 13, salaryN = 10;
         int iN = employeesSize > 1 ? employeesSize : 2;
 
+        int idN = 2;
         int nameN = 4;
         int surnameN = 7;
         int birthDateN = 10;
@@ -43,21 +43,27 @@ public class EmployeeShowInConsoleManager {
         int salaryN = 10;
         int jobN = 3;
         for (int i = 0; i < employeesSize; i++) {
-            if (EmployeeManager.employees.get(i).getName().length() > nameN) {
-                nameN = EmployeeManager.employees.get(i).getName().length();
+            Employee currentEmployee = EmployeeManager.employees.get(i);
+
+            if (currentEmployee.getId() > idN) {
+                idN = currentEmployee.getId();
             }
-            if (EmployeeManager.employees.get(i).getSurname().length() > surnameN) {
-                surnameN = EmployeeManager.employees.get(i).getSurname().length();
+            if (currentEmployee.getName().length() > nameN) {
+                nameN = currentEmployee.getName().length();
             }
-            if (String.valueOf(EmployeeManager.employees.get(i).getSalary()).length() > salaryN) {
-                salaryN = String.valueOf(EmployeeManager.employees.get(i).getSalary()).length();
+            if (currentEmployee.getSurname().length() > surnameN) {
+                surnameN = currentEmployee.getSurname().length();
             }
-            if (EmployeeManager.employees.get(i).getJob().toString().length() > jobN) {
-                jobN = EmployeeManager.employees.get(i).getJob().toString().length();
+            if (String.valueOf(currentEmployee.getSalary()).length() > salaryN) {
+                salaryN = String.valueOf(currentEmployee.getSalary()).length();
+            }
+            if (currentEmployee.getJob().toString().length() > jobN) {
+                jobN = currentEmployee.getJob().toString().length();
             }
         }
 
         System.out.println(cornerTopLeft + Utilities.generateMultipleChars(iN, lineX) + crossTDown // i
+                + Utilities.generateMultipleChars(idN, lineX) + crossTDown //id
                 + Utilities.generateMultipleChars(nameN, lineX) + crossTDown //name
                 + Utilities.generateMultipleChars(surnameN, lineX) + crossTDown // surname
                 + Utilities.generateMultipleChars(birthDateN, lineX) + crossTDown // birth date
@@ -66,6 +72,7 @@ public class EmployeeShowInConsoleManager {
                 + Utilities.generateMultipleChars(jobN, lineX) // job
                 + cornerTopRight);
         System.out.println(lineY + Utilities.insertWordWithNSpaces(iN, "nr") + lineY
+                + Utilities.insertWordWithNSpaces(idN, "id") + lineY
                 + Utilities.insertWordWithNSpaces(nameN, "name") + lineY
                 + Utilities.insertWordWithNSpaces(surnameN, "surname") + lineY
                 + Utilities.insertWordWithNSpaces(birthDateN, "birth date") + lineY
@@ -75,6 +82,7 @@ public class EmployeeShowInConsoleManager {
 
         for (int i = 0; i < employeesSize; i++) {
             System.out.println(crossTRight + Utilities.generateMultipleChars(iN, lineX) + cross // i
+                    + Utilities.generateMultipleChars(idN, lineX) + cross //id
                     + Utilities.generateMultipleChars(nameN, lineX) + cross //name
                     + Utilities.generateMultipleChars(surnameN, lineX) + cross // surname
                     + Utilities.generateMultipleChars(birthDateN, lineX) + cross // birth date
@@ -84,6 +92,7 @@ public class EmployeeShowInConsoleManager {
                     + crossTLeft);
 
             System.out.println(lineY + Utilities.insertWordWithNSpaces(iN, String.valueOf(i + 1)) + lineY
+                    + Utilities.insertWordWithNSpaces(idN, String.valueOf(EmployeeManager.employees.get(i).getId())) + lineY
                     + Utilities.insertWordWithNSpaces(nameN, EmployeeManager.employees.get(i).getName()) + lineY
                     + Utilities.insertWordWithNSpaces(surnameN, EmployeeManager.employees.get(i).getSurname()) + lineY
                     + Utilities.insertWordWithNSpaces(birthDateN, EmployeeManager.employees.get(i).getBirthDateFormatted()) + lineY
@@ -93,6 +102,7 @@ public class EmployeeShowInConsoleManager {
         }
 
         System.out.println(cornerBottomLeft + Utilities.generateMultipleChars(iN, lineX) + crossTUp // i
+                + Utilities.generateMultipleChars(idN, lineX) + crossTUp //id
                 + Utilities.generateMultipleChars(nameN, lineX) + crossTUp //name
                 + Utilities.generateMultipleChars(surnameN, lineX) + crossTUp // surname
                 + Utilities.generateMultipleChars(birthDateN, lineX) + crossTUp // birth date
@@ -139,6 +149,7 @@ public class EmployeeShowInConsoleManager {
 
             System.out.println("INSERTED NEW EMPLOYEE:");
             int i = EmployeeManager.employees.size() - 1;
+            System.out.println("\tid: " + EmployeeManager.employees.get(i).getId());
             System.out.println("\tname: " + EmployeeManager.employees.get(i).getName());
             System.out.println("\tsurname: " + EmployeeManager.employees.get(i).getSurname());
             System.out.println("\tbirthdate: " + EmployeeManager.employees.get(i).getBirthDateFormatted());
@@ -222,7 +233,7 @@ public class EmployeeShowInConsoleManager {
         System.out.print("job: " + Utilities.firstLetterUpperCase(EmployeeManager.employees.get(employeeIndex).getJob().toString()) + " -> ");
         Job job = EmployeeDataChecker.enterJob();
 
-        return new Employee(name, surname, idnp, birthDate, salary, job);
+        return new Employee(name, surname, idnp, birthDate, salary, job, false);
     }
 
     public void update() {

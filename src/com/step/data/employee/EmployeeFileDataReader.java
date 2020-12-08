@@ -133,9 +133,9 @@ public class EmployeeFileDataReader {
                     boolean fileCreatedSuccessfully = file.createNewFile();
                     System.out.println("There was no file before, so a new file was created.");
                     Utilities.enterAnyValueToContinue();
-                    return;
                 } catch (IOException e) {
                     System.out.println("Undetected error on file creating process.");
+                    return;
                 }
             }
 
