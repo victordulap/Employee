@@ -1,14 +1,13 @@
-package com.step.data.employee;
+package com.step.data.employee.manager;
 
-import com.step.data.menu.Utilities;
+import com.step.data.employee.Employee;
 
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-public class EmployeeManager implements IEmployeeManager {
+public class EmployeeManagerInFile implements IEmployeeManager {
     protected static final Scanner sc = new Scanner(System.in);
-    protected static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+    public static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
     public static List<Employee> employees = new ArrayList<>();
 

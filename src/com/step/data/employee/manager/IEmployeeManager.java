@@ -1,4 +1,6 @@
-package com.step.data.employee;
+package com.step.data.employee.manager;
+
+import com.step.data.employee.Employee;
 
 import java.util.List;
 

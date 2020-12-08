@@ -1,6 +1,6 @@
 package com.step.data.employee;
 
-import com.step.data.menu.Utilities;
+import com.step.data.employee.manager.EmployeeManagerInFile;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -78,10 +78,10 @@ public class Employee implements Serializable {
     // end getters
 
     public String getBirthDateFormatted() {
-        return birthDate.format(EmployeeManager.dateTimeFormatter);
+        return birthDate.format(EmployeeManagerInFile.dateTimeFormatter);
     }
 
-    protected String getIdnp() {
+    public String getIdnp() {
         return idnp;
     }
 

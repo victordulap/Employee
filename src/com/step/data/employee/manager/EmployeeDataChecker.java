@@ -1,5 +1,7 @@
-package com.step.data.employee;
+package com.step.data.employee.manager;
 
+import com.step.data.employee.Employee;
+import com.step.data.employee.Job;
 import com.step.data.menu.Utilities;
 
 import java.time.LocalDate;
@@ -10,7 +12,7 @@ import java.util.Scanner;
 
 public class EmployeeDataChecker {
 
-    protected static LocalDate enterBirthDate() {
+    public static LocalDate enterBirthDate() {
         Scanner sc = new Scanner(System.in);
 
         LocalDate birthDate;
@@ -21,7 +23,7 @@ public class EmployeeDataChecker {
             date = date.trim();
 
             try {
-                birthDate = LocalDate.parse(date, EmployeeManager.dateTimeFormatter);
+                birthDate = LocalDate.parse(date, EmployeeManagerInFile.dateTimeFormatter);
                 break;
             } catch (Exception e) {
                 System.out.println("Invalid date. please try again (ex: 31.01.1999 (dd.MM.yyyy))");
@@ -32,7 +34,7 @@ public class EmployeeDataChecker {
         return birthDate;
     }
 
-    protected static double enterSalary() {
+    public static double enterSalary() {
         Scanner sc = new Scanner(System.in);
 
         double salary;
@@ -47,7 +49,7 @@ public class EmployeeDataChecker {
                 System.out.print("Enter salary: ");
                 // reset scanner's line so it work properly,
                 // it doesn't reset on any scanner nextXxx() methods other than nextLine()
-                EmployeeManager.sc.nextLine();
+                sc.nextLine();
             }
 
         } while (true);
@@ -55,7 +57,7 @@ public class EmployeeDataChecker {
         return salary;
     }
 
-    protected static String enterIdnp() {
+    public static String enterIdnp() {
         Scanner sc = new Scanner(System.in);
 
         boolean repetitiveIdnp;
@@ -77,7 +79,7 @@ public class EmployeeDataChecker {
 
             if (verifyRest) {
                 List<String> idnps = new ArrayList<>();
-                for (Employee employee : EmployeeManager.employees) {
+                for (Employee employee : EmployeeManagerInFile.employees) {
                     idnps.add(employee.getIdnp());
                 }
 
@@ -100,7 +102,7 @@ public class EmployeeDataChecker {
         return enteredIdnp;
     }
 
-    protected static String enterIdnp(String prevIdnp) {
+    public static String enterIdnp(String prevIdnp) {
         Scanner sc = new Scanner(System.in);
 
         boolean repetitiveIdnp;
@@ -124,7 +126,7 @@ public class EmployeeDataChecker {
                 if (enteredIdnp.equals(prevIdnp)) return enteredIdnp;
 
                 List<String> idnps = new ArrayList<>();
-                for (Employee employee : EmployeeManager.employees) {
+                for (Employee employee : EmployeeManagerInFile.employees) {
                     idnps.add(employee.getIdnp());
                 }
 
@@ -145,7 +147,7 @@ public class EmployeeDataChecker {
         return enteredIdnp.trim();
     }
 
-    protected static Job enterJob() {
+    public static Job enterJob() {
         Scanner sc = new Scanner(System.in);
 
         boolean validJob = false;
@@ -169,7 +171,7 @@ public class EmployeeDataChecker {
         return Job.valueOf(job);
     }
 
-    protected static String enterValidString() {
+    public static String enterValidString() {
         Scanner sc = new Scanner(System.in);
 
         while (true) {

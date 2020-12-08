@@ -1,23 +1,77 @@
 package com.step.data.menu;
 
 import com.step.data.employee.Employee;
-import com.step.data.employee.EmployeeManager;
-import com.step.data.employee.EmployeeShowInConsoleManager;
+import com.step.data.employee.manager.EmployeeManagerInFile;
+import com.step.data.employee.manager.EmployeeShowInConsoleManager;
 
 import java.util.Scanner;
 
 public class Menu{
     private static Scanner sc = new Scanner(System.in);
-    private static EmployeeShowInConsoleManager em = new EmployeeShowInConsoleManager();
+    private static EmployeeShowInConsoleManager em;
+    private static int option;
 
-    public static void showMenu() {
+    public Menu() {
+        Scanner scanner = new Scanner(System.in);
+
         int nav = -1;
 
-        System.out.println("LOADING DATA...");
+        Utilities.clearScreen();
+
+        do {
+            System.out.println("CHOOSE APPLICATION MODE");
+            System.out.println();
+            System.out.println("\t1. DEMO (don't save data)");
+            System.out.println("\t2. LOCAL (save data in file)");
+            System.out.println("\t3. SECURE (save data in DB)");
+            System.out.println();
+            System.out.println("\t0. exit");
+
+            System.out.print("\nenter submenu number: ");
+            try {
+                nav = sc.nextInt();
+            } catch (Exception e) {
+                System.out.println("\nInvalid format, try again (ex: 1)");
+                Utilities.enterAnyValueToContinue();
+            }
+            finally {
+                sc.nextLine();
+            }
+
+            switch (nav) {
+                case 1:
+                case 2:
+                case 3:
+                    break;
+                case 0:
+                    Utilities.clearScreen();
+                    System.out.println("Application exited");
+                    System.exit(0);
+                    break;
+
+                default:
+                    System.out.println("\nNo such submenu, try again (ex: 1)");
+                    Utilities.enterAnyValueToContinue();
+                    break;
+            }
+
+            Utilities.clearScreen();
+        } while (nav < 0 || nav > 3);
+
+        option = nav;
+        em = new EmployeeShowInConsoleManager(nav);
+    }
+
+    public void showMenu() {
+        int nav = -1;
+
+        if(option == 2) {
+            System.out.println("LOADING DATA...");
 //        EmployeeDataManager.importCSV();
-        EmployeeManager.importSerialized();
-        Employee.readLastIdFromFile();
-        System.out.println("DONE!");
+            EmployeeManagerInFile.importSerialized();
+            Employee.readLastIdFromFile();
+            System.out.println("DONE!");
+        }
 
         Utilities.clearScreen();
 
@@ -70,8 +124,10 @@ public class Menu{
 //                        System.out.println("SAVING DATA");
 //                        EmployeeManager.exportCSV();
 //                    }
-                    EmployeeManager.exportSerialized();
-                    Employee.saveLastIdToFile();
+                    if(option == 2) {
+                        EmployeeManagerInFile.exportSerialized();
+                        Employee.saveLastIdToFile();
+                    }
 
                     System.out.println("Application exited");
                     System.exit(0);
@@ -87,7 +143,7 @@ public class Menu{
         } while (nav != 0);
     }
 
-    private static void viewEmployeesMenu() {
+    private void viewEmployeesMenu() {
         int nav = -1;
 
         Utilities.clearScreen();
@@ -113,7 +169,7 @@ public class Menu{
 
             switch (nav) {
                 case 1:
-                    em.view(EmployeeManager.employees);
+                    em.view(EmployeeManagerInFile.employees);
                     break;
                 case 2:
                     filterViewEmployeesMenu();
@@ -131,7 +187,7 @@ public class Menu{
         } while (nav != 0);
     }
 
-    private static void filterViewEmployeesMenu() {
+    private void filterViewEmployeesMenu() {
         int nav = -1;
 
         Utilities.clearScreen();

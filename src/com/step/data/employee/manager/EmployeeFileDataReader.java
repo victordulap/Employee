@@ -1,9 +1,9 @@
-package com.step.data.employee;
+package com.step.data.employee.manager;
 
+import com.step.data.employee.Employee;
 import com.step.data.menu.Utilities;
 
 import java.io.*;
-import java.time.LocalDate;
 
 public class EmployeeFileDataReader {
     //csv
@@ -86,7 +86,7 @@ public class EmployeeFileDataReader {
     //end csv
 
     //serializing
-    protected static void importFromSerializedFile() {
+    public static void importFromSerializedFile() {
         try {
             String path = ".\\data\\employees.dat"; // works
             File file = new File(path);
@@ -102,7 +102,7 @@ public class EmployeeFileDataReader {
             FileInputStream fileInputStream = new FileInputStream(file);
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
 
-            EmployeeManager.employees.clear();
+            EmployeeManagerInFile.employees.clear();
             while (true) {
                 try {
                     Object o = objectInputStream.readObject();
@@ -110,7 +110,7 @@ public class EmployeeFileDataReader {
                         break;
                     }
 
-                    EmployeeManager.employees.add((Employee) o);
+                    EmployeeManagerInFile.employees.add((Employee) o);
                 } catch (Exception e) {
                     // eof
                     break;
@@ -124,7 +124,7 @@ public class EmployeeFileDataReader {
         }
     }
 
-    protected static void exportToSerializedFile() {
+    public static void exportToSerializedFile() {
         try {
             String path = ".\\data\\employees.dat"; // works
             File file = new File(path);
@@ -142,7 +142,7 @@ public class EmployeeFileDataReader {
             FileOutputStream fileOutputStream = new FileOutputStream(file);
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
 
-            for (Employee employee : EmployeeManager.employees) {
+            for (Employee employee : EmployeeManagerInFile.employees) {
                 objectOutputStream.writeObject(employee);
             }
 
