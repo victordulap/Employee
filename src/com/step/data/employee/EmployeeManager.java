@@ -4,15 +4,13 @@ import com.step.data.menu.Utilities;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class EmployeeManager implements IEmployeeManager {
     protected static final Scanner sc = new Scanner(System.in);
     protected static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
-    protected static List<Employee> employees = new ArrayList<>();
+    public static List<Employee> employees = new ArrayList<>();
 
     //data
     /*public static void exportCSV() {
@@ -97,6 +95,24 @@ public class EmployeeManager implements IEmployeeManager {
         }
 
         return employeeIndex;
+    }
+
+    @Override
+    public List<Employee> filterById(int minId, int maxId) {
+        Map<Integer, Employee> employeeMap = new HashMap<>();
+
+        for(Employee employee: employees) {
+            employeeMap.put(employee.getId(), employee);
+        }
+
+        List<Employee> employeesFilteredById = new ArrayList<>();
+        for(int id: employeeMap.keySet()) {
+            if(id >= minId && id <= maxId) {
+                employeesFilteredById.add(employeeMap.get(id));
+            }
+        }
+
+        return employeesFilteredById;
     }
 
     /**

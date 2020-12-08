@@ -45,7 +45,7 @@ public class Menu{
 
             switch (nav) {
                 case 1:
-                    EmployeeShowInConsoleManager.view();
+                    viewEmployeesMenu();
                     break;
                 case 2:
                     em.insert();
@@ -75,6 +75,90 @@ public class Menu{
 
                     System.out.println("Application exited");
                     System.exit(0);
+                    break;
+
+                default:
+                    System.out.println("\nNo such submenu, try again (ex: 1)");
+                    Utilities.enterAnyValueToContinue();
+                    break;
+            }
+
+            Utilities.clearScreen();
+        } while (nav != 0);
+    }
+
+    private static void viewEmployeesMenu() {
+        int nav = -1;
+
+        Utilities.clearScreen();
+
+        do {
+            System.out.println("VIEW EMPLOYEES");
+            System.out.println();
+            System.out.println("\t1. view all");
+            System.out.println("\t2. filter");
+            System.out.println();
+            System.out.println("\t0. exit");
+
+            System.out.print("\nenter submenu number: ");
+            try {
+                nav = sc.nextInt();
+            } catch (Exception e) {
+                System.out.println("\nInvalid format, try again (ex: 1)");
+                Utilities.enterAnyValueToContinue();
+            }
+            finally {
+                sc.nextLine();
+            }
+
+            switch (nav) {
+                case 1:
+                    em.view(EmployeeManager.employees);
+                    break;
+                case 2:
+                    filterViewEmployeesMenu();
+                    break;
+                case 0:
+                    break;
+
+                default:
+                    System.out.println("\nNo such submenu, try again (ex: 1)");
+                    Utilities.enterAnyValueToContinue();
+                    break;
+            }
+
+            Utilities.clearScreen();
+        } while (nav != 0);
+    }
+
+    private static void filterViewEmployeesMenu() {
+        int nav = -1;
+
+        Utilities.clearScreen();
+
+        do {
+            System.out.println("FILTER EMPLOYEES");
+            System.out.println();
+            System.out.println("\t1. by id");
+            System.out.println();
+            System.out.println("\t0. exit");
+
+            System.out.print("\nenter submenu number: ");
+            try {
+                nav = sc.nextInt();
+            } catch (Exception e) {
+                System.out.println("\nInvalid format, try again (ex: 1)");
+                Utilities.enterAnyValueToContinue();
+            }
+            finally {
+                sc.nextLine();
+            }
+
+            switch (nav) {
+                case 1:
+                    em.filterById();
+                    break;
+                case 0:
                     break;
 
                 default:

@@ -3,13 +3,14 @@ package com.step.data.employee;
 import com.step.data.menu.Utilities;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Scanner;
 
 public class EmployeeShowInConsoleManager {
     private EmployeeManager em = new EmployeeManager();
     protected static final Scanner sc = new Scanner(System.in);
 
-    public static void view() {
+    public void view(List<Employee> employees) {
         Utilities.clearScreen();
 
         if (EmployeeManager.employees.size() > 0) {
@@ -32,7 +33,7 @@ public class EmployeeShowInConsoleManager {
         char crossTLeft = '\u2563';
         char crossTRight = '\u2560';
 
-        int employeesSize = EmployeeManager.employees.size();
+        int employeesSize = employees.size();
         int iN = employeesSize > 1 ? employeesSize : 2;
 
         int idN = 2;
@@ -43,7 +44,7 @@ public class EmployeeShowInConsoleManager {
         int salaryN = 10;
         int jobN = 3;
         for (int i = 0; i < employeesSize; i++) {
-            Employee currentEmployee = EmployeeManager.employees.get(i);
+            Employee currentEmployee = employees.get(i);
 
             if (currentEmployee.getId() > idN) {
                 idN = currentEmployee.getId();
@@ -92,13 +93,13 @@ public class EmployeeShowInConsoleManager {
                     + crossTLeft);
 
             System.out.println(lineY + Utilities.insertWordWithNSpaces(iN, String.valueOf(i + 1)) + lineY
-                    + Utilities.insertWordWithNSpaces(idN, String.valueOf(EmployeeManager.employees.get(i).getId())) + lineY
-                    + Utilities.insertWordWithNSpaces(nameN, EmployeeManager.employees.get(i).getName()) + lineY
-                    + Utilities.insertWordWithNSpaces(surnameN, EmployeeManager.employees.get(i).getSurname()) + lineY
-                    + Utilities.insertWordWithNSpaces(birthDateN, EmployeeManager.employees.get(i).getBirthDateFormatted()) + lineY
-                    + Utilities.insertWordWithNSpaces(idnpN, EmployeeManager.employees.get(i).getIdnp()) + lineY
-                    + Utilities.insertWordWithNSpaces(salaryN, String.valueOf(EmployeeManager.employees.get(i).getSalary())) + lineY
-                    + Utilities.insertWordWithNSpaces(jobN, (Utilities.firstLetterUpperCase(EmployeeManager.employees.get(i).getJob().toString()))) + lineY);
+                    + Utilities.insertWordWithNSpaces(idN, String.valueOf(employees.get(i).getId())) + lineY
+                    + Utilities.insertWordWithNSpaces(nameN, employees.get(i).getName()) + lineY
+                    + Utilities.insertWordWithNSpaces(surnameN, employees.get(i).getSurname()) + lineY
+                    + Utilities.insertWordWithNSpaces(birthDateN, employees.get(i).getBirthDateFormatted()) + lineY
+                    + Utilities.insertWordWithNSpaces(idnpN, employees.get(i).getIdnp()) + lineY
+                    + Utilities.insertWordWithNSpaces(salaryN, String.valueOf(employees.get(i).getSalary())) + lineY
+                    + Utilities.insertWordWithNSpaces(jobN, (Utilities.firstLetterUpperCase(employees.get(i).getJob().toString()))) + lineY);
         }
 
         System.out.println(cornerBottomLeft + Utilities.generateMultipleChars(iN, lineX) + crossTUp // i
@@ -112,6 +113,33 @@ public class EmployeeShowInConsoleManager {
                 + cornerBottomRight);
 
         Utilities.enterAnyValueToContinue();
+    }
+
+    public void filterById() {
+        Scanner scanner = new Scanner(System.in);
+
+        Utilities.clearScreen();
+
+
+
+        int minId;
+        int maxId;
+        do {
+            try {
+                System.out.print("Enter min id for filtering: ");
+                minId = scanner.nextInt();
+                System.out.print("Enter max id for filtering: ");
+                maxId = scanner.nextInt();
+                break;
+            } catch (Exception e) {
+                System.out.println("Invalid id format, try again (ex: 123)");
+                scanner.nextLine();
+            }
+        } while (true);
+
+        List<Employee> employees = em.filterById(minId, maxId);
+
+        view(employees);
     }
 
     public void insert() {
@@ -315,7 +343,6 @@ public class EmployeeShowInConsoleManager {
 
         int id;
         do {
-//            System.out.print("Enter salary: ");
             try {
                 id = scanner.nextInt();
                 break;
