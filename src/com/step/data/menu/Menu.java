@@ -28,7 +28,7 @@ public class Menu{
             System.out.println("\t2. insert");
             System.out.println("\t3. update");
             System.out.println("\t4. delete");
-            System.out.println("\t5. file");
+//            System.out.println("\t5. file");
             System.out.println();
             System.out.println("\t0. exit");
 
@@ -56,20 +56,20 @@ public class Menu{
                 case 4:
                     em.delete();
                     break;
-                case 5:
-                    fileMenu();
-                    break;
+//                case 5:
+//                    fileMenu();
+//                    break;
                 case 0:
                     Utilities.clearScreen();
 
-                    System.out.print("Type yes or 1 to save data: ");
-                    String str = sc.nextLine();
-                    boolean toSaveInCSV = str.equalsIgnoreCase("yes") || str.equalsIgnoreCase("1");
-
-                    if(toSaveInCSV) {
-                        System.out.println("SAVING DATA");
-                        EmployeeManager.exportCSV();
-                    }
+//                    System.out.print("Type yes or 1 to save data: ");
+//                    String str = sc.nextLine();
+//                    boolean toSaveInCSV = str.equalsIgnoreCase("yes") || str.equalsIgnoreCase("1");
+//
+//                    if(toSaveInCSV) {
+//                        System.out.println("SAVING DATA");
+//                        EmployeeManager.exportCSV();
+//                    }
                     EmployeeManager.exportSerialized();
                     Employee.saveLastIdToFile();
 
@@ -87,7 +87,7 @@ public class Menu{
         } while (nav != 0);
     }
 
-    private static void fileMenu() {
+    /*private static void fileMenu() {
         int nav = -1;
 
         do {
@@ -129,5 +129,5 @@ public class Menu{
 
             Utilities.clearScreen();
         } while (nav != 0);
-    }
+    }*/
 }

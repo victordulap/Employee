@@ -15,19 +15,19 @@ public class EmployeeManager implements IEmployeeManager {
     protected static List<Employee> employees = new ArrayList<>();
 
     //data
-    public static void exportCSV() {
+    /*public static void exportCSV() {
         EmployeeFileDataReader.exportToCSVFile();
 
         System.out.println("Exported successfully!");
         Utilities.enterAnyValueToContinue();
-    }
+    }*/
 
-    public static void importCSV() {
+    /*public static void importCSV() {
         EmployeeFileDataReader.importFromCSVFile();
 
         System.out.println("Imported successfully!");
         Utilities.enterAnyValueToContinue();
-    }
+    }*/
 
     public static void exportSerialized() {
         EmployeeFileDataReader.exportToSerializedFile();

@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 public class EmployeeFileDataReader {
     //csv
-    protected static void importFromCSVFile() {
+    /*protected static void importFromCSVFile() {
         String path = ".\\data\\employees.txt"; // works
         File file = new File(path);
         if (!file.exists()) {
@@ -33,9 +33,9 @@ public class EmployeeFileDataReader {
         } catch (IOException e) {
             System.out.println("Undetected error on file reading process.");
         }
-    }
+    }*/
 
-    protected static void exportToCSVFile() {
+    /*protected static void exportToCSVFile() {
         String path = ".\\data\\employees.txt";
         File file = new File(path);
         if (!file.exists()) {
@@ -60,18 +60,18 @@ public class EmployeeFileDataReader {
         } catch (IOException ex) {
             System.out.println("Error: " + ex.getMessage());
         }
-    }
+    }*/
 
-    private static String convertFromEmployeeToCSV(Employee employee) {
+    /*private static String convertFromEmployeeToCSV(Employee employee) {
         return employee.getName() + "," +
                 employee.getSurname() + "," +
                 employee.getIdnp() + "," +
                 employee.getBirthDate() + "," +
                 employee.getSalary() + "," +
                 employee.getJob();
-    }
+    }*/
 
-    private static Employee convertFromCSVToEmployee(String csvLine) {
+    /*private static Employee convertFromCSVToEmployee(String csvLine) {
         String[] parameters = csvLine.split(",");
 
         String name = parameters[0];
@@ -82,7 +82,7 @@ public class EmployeeFileDataReader {
         Job job = Job.valueOf(parameters[5]);
 
         return new Employee(name, surname, idnp, birthDate, salary, job);
-    }
+    }*/
     //end csv
 
     //serializing
