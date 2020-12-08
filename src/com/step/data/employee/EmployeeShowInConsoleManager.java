@@ -172,8 +172,9 @@ public class EmployeeShowInConsoleManager {
 
             System.out.println("Select delete method:");
             System.out.println();
-            System.out.println("\t1. delete by idnp");
-            System.out.println("\t2. delete by name and surname");
+            System.out.println("\t1. delete by id");
+            System.out.println("\t2. delete by idnp");
+            System.out.println("\t3. delete by name and surname");
             System.out.println();
             System.out.println("\t0. back");
 
@@ -189,9 +190,12 @@ public class EmployeeShowInConsoleManager {
 
             switch (nav) {
                 case 1:
-                    this.deleteByIdnp();
+                    this.deleteById();
                     break;
                 case 2:
+                    this.deleteByIdnp();
+                    break;
+                case 3:
                     this.deleteByNameAndSurname();
                     break;
                 case 0:
@@ -208,16 +212,16 @@ public class EmployeeShowInConsoleManager {
 
     public Employee updateStatement(int employeeIndex) {
         System.out.println("Editing employee " + EmployeeManager.employees.get(employeeIndex).getName()
-                + " " + EmployeeManager.employees.get(employeeIndex).getSurname() /*+ " (id: "
-                + employees.get(employeeIndex).getId() + " / idnp: "*/
-                + " (idnp: " + EmployeeManager.employees.get(employeeIndex).getIdnp() + ")...");
+                + " " + EmployeeManager.employees.get(employeeIndex).getSurname() + " (id: "
+                + EmployeeManager.employees.get(employeeIndex).getId() + " / idnp: "
+                + EmployeeManager.employees.get(employeeIndex).getIdnp() + ")...");
         System.out.print("name: " + EmployeeManager.employees.get(employeeIndex).getName() + " -> ");
-        String name = sc.nextLine();
+        String name = EmployeeDataChecker.enterValidString();
         name = name.trim();
         name = Utilities.firstLetterUpperCase(name);
 
         System.out.print("surname: " + EmployeeManager.employees.get(employeeIndex).getSurname() + " -> ");
-        String surname = sc.nextLine();
+        String surname = EmployeeDataChecker.enterValidString();
         surname = surname.trim();
         surname = Utilities.firstLetterUpperCase(surname);
 
@@ -244,8 +248,9 @@ public class EmployeeShowInConsoleManager {
 
             System.out.println("Select update method:");
             System.out.println();
-            System.out.println("\t1. update by idnp");
-            System.out.println("\t2. update by name and surname");
+            System.out.println("\t1. update by id");
+            System.out.println("\t2. update by idnp");
+            System.out.println("\t3. update by name and surname");
             System.out.println();
             System.out.println("\t0. back");
 
@@ -261,9 +266,12 @@ public class EmployeeShowInConsoleManager {
 
             switch (nav) {
                 case 1:
-                    this.updateByIdnp();
+                    this.updateById();
                     break;
                 case 2:
+                    this.updateByIdnp();
+                    break;
+                case 3:
                     this.updateByNameAndSurname();
                     break;
                 case 0:
@@ -292,6 +300,40 @@ public class EmployeeShowInConsoleManager {
             System.out.println("\nUpdated successfully!\n");
         } else {
             System.out.println("No such employee with indicated idnp (" + idnp + ").");
+        }
+
+        Utilities.enterAnyValueToContinue();
+    }
+
+    private void updateById() {
+//        made a scanner here so we have less problems with reseting scanner
+        Scanner scanner = new Scanner(System.in);
+
+        Utilities.clearScreen();
+
+        System.out.print("Enter employee's id: ");
+
+        int id;
+        do {
+//            System.out.print("Enter salary: ");
+            try {
+                id = scanner.nextInt();
+                break;
+            } catch (Exception e) {
+                System.out.println("Invalid id format, try again (ex: 123)");
+                System.out.print("Enter id: ");
+                scanner.nextLine();
+            }
+        } while (true);
+
+
+        int employeeIndex = em.findById(id);
+        if(employeeIndex >= 0) {
+            Employee newEmployee = this.updateStatement(employeeIndex);
+            em.update(employeeIndex, newEmployee);
+            System.out.println("\nUpdated successfully!\n");
+        } else {
+            System.out.println("No such employee with indicated id (" + id + ").");
         }
 
         Utilities.enterAnyValueToContinue();
@@ -346,6 +388,41 @@ public class EmployeeShowInConsoleManager {
             }
         } else {
             System.out.println("No such employee with indicated idnp (" + idnp + ").");
+        }
+
+        Utilities.enterAnyValueToContinue();
+    }
+
+    private void deleteById() {
+        //        made a scanner here so we have less problems with reseting scanner
+        Scanner scanner = new Scanner(System.in);
+
+        Utilities.clearScreen();
+
+        System.out.print("Enter employee's id: ");
+
+        int id;
+        do {
+//            System.out.print("Enter salary: ");
+            try {
+                id = scanner.nextInt();
+                break;
+            } catch (Exception e) {
+                System.out.println("Invalid id format, try again (ex: 123)");
+                System.out.print("Enter id: ");
+                scanner.nextLine();
+            }
+        } while (true);
+
+        int employeeIndex = em.findById(id);
+        if(employeeIndex >= 0) {
+            Employee employeeToDelete = EmployeeManager.employees.get(employeeIndex);
+
+            if (em.delete(employeeIndex)) {
+                deleteMessage(employeeToDelete);
+            }
+        } else {
+            System.out.println("No such employee with indicated id (" + id + ").");
         }
 
         Utilities.enterAnyValueToContinue();

@@ -82,6 +82,24 @@ public class EmployeeManager implements IEmployeeManager {
     }
 
     /**
+     * @return  index in list: <br>
+     *          -1, if, employee not found <br>
+     *          0..n, if, employee found
+     */
+    @Override
+    public int findById(int id) {
+        int employeeIndex = -1;
+        for (int i = 0; i < employees.size(); i++) {
+            if (employees.get(i).getId() == id) {
+                employeeIndex = i;
+                break;
+            }
+        }
+
+        return employeeIndex;
+    }
+
+    /**
      * @param employeeIndex the index of employee to delete <br>
      * @return true - if deleted successfully <br>
      * false - if not deleted

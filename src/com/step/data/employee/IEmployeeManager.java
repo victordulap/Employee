@@ -8,6 +8,8 @@ public interface IEmployeeManager {
 
     int findByNameAndSurname(String name, String surname);
 
+    int findById(int id);
+
     boolean update(int employeeIndex, Employee newEmployee);
 
     boolean delete(int employeeIndex); // done

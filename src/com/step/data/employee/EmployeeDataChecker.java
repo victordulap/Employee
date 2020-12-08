@@ -6,14 +6,18 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 public class EmployeeDataChecker {
+
     protected static LocalDate enterBirthDate() {
+        Scanner sc = new Scanner(System.in);
+
         LocalDate birthDate;
         do {
             System.out.println("Enter birth date in format dd.MM.yyyy (ex: 31.01.1999)");
             System.out.print("birth date: ");
-            String date = EmployeeManager.sc.nextLine();
+            String date = sc.nextLine();
             date = date.trim();
 
             try {
@@ -29,32 +33,36 @@ public class EmployeeDataChecker {
     }
 
     protected static double enterSalary() {
+        Scanner sc = new Scanner(System.in);
+
         double salary;
 
         do {
 //            System.out.print("Enter salary: ");
             try {
-                salary = EmployeeManager.sc.nextDouble();
+                salary = sc.nextDouble();
                 break;
             } catch (Exception e) {
                 System.out.println("Invalid salary format, try again (ex: 9999.9)");
-                System.out.print("Enter idnp: ");
-            } finally {
+                System.out.print("Enter salary: ");
                 // reset scanner's line so it work properly,
                 // it doesn't reset on any scanner nextXxx() methods other than nextLine()
                 EmployeeManager.sc.nextLine();
             }
+
         } while (true);
 
         return salary;
     }
 
     protected static String enterIdnp() {
+        Scanner sc = new Scanner(System.in);
+
         boolean repetitiveIdnp;
         String enteredIdnp;
         do {
             repetitiveIdnp = false;
-            enteredIdnp = EmployeeManager.sc.nextLine();
+            enteredIdnp = sc.nextLine();
             enteredIdnp = enteredIdnp.trim();
 
             boolean verifyRest = true;
@@ -93,11 +101,13 @@ public class EmployeeDataChecker {
     }
 
     protected static String enterIdnp(String prevIdnp) {
+        Scanner sc = new Scanner(System.in);
+
         boolean repetitiveIdnp;
         String enteredIdnp;
         do {
             repetitiveIdnp = false;
-            enteredIdnp = EmployeeManager.sc.nextLine();
+            enteredIdnp = sc.nextLine();
             enteredIdnp = enteredIdnp.trim();
 
             boolean verifyRest = true;
@@ -136,10 +146,12 @@ public class EmployeeDataChecker {
     }
 
     protected static Job enterJob() {
+        Scanner sc = new Scanner(System.in);
+
         boolean validJob = false;
         String job = Job.MANAGER.toString();
         while (!validJob) {
-            job = EmployeeManager.sc.nextLine();
+            job = sc.nextLine();
 
             for (Job j : Job.values()) {
                 if (j.toString().equals(job.toUpperCase())) {
@@ -155,5 +167,17 @@ public class EmployeeDataChecker {
         job = job.toUpperCase();
 
         return Job.valueOf(job);
+    }
+
+    protected static String enterValidString() {
+        Scanner sc = new Scanner(System.in);
+
+        while (true) {
+            String str = sc.nextLine();
+            str = str.trim();
+            if (!str.equalsIgnoreCase("")) {
+                return str;
+            }
+        }
     }
 }
