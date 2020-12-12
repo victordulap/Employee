@@ -2,6 +2,7 @@ package com.step.data.employee.manager;
 
 import com.step.data.employee.Employee;
 import com.step.data.employee.Job;
+import com.step.data.employee.manager.database.EmployeeManagerInDB;
 import com.step.data.employee.manager.file.EmployeeManagerInFile;
 import com.step.data.employee.manager.memory.EmployeeManagerInMemory;
 import com.step.data.menu.Utilities;
@@ -21,6 +22,9 @@ public class EmployeeShowInConsoleManager {
                 break;
             } case 2: {
                 em = new EmployeeManagerInFile();
+                break;
+            } case 3: {
+                em = new EmployeeManagerInDB();
                 break;
             }
         }

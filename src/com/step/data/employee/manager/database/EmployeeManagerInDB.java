@@ -1,15 +1,18 @@
 package com.step.data.employee.manager.database;
 
 import com.step.data.employee.Employee;
+import com.step.data.employee.manager.EmployeeDataChecker;
 import com.step.data.employee.manager.EmployeeManager;
 import com.step.data.employee.manager.IEmployeeManager;
 
 import java.util.List;
 
 public class EmployeeManagerInDB extends EmployeeManager implements IEmployeeManager {
+    public static EmployeeDAO dao = new EmployeeDAO();
+
     @Override
     public void insert(Employee e) {
-
+        dao.insert(e);
     }
 
     @Override
