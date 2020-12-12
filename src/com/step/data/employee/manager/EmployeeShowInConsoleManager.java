@@ -2,6 +2,8 @@ package com.step.data.employee.manager;
 
 import com.step.data.employee.Employee;
 import com.step.data.employee.Job;
+import com.step.data.employee.manager.file.EmployeeManagerInFile;
+import com.step.data.employee.manager.memory.EmployeeManagerInMemory;
 import com.step.data.menu.Utilities;
 
 import java.time.LocalDate;
@@ -9,7 +11,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class EmployeeShowInConsoleManager {
-    private IEmployeeManager em;
+    private IEmployeeManager em = new EmployeeManagerInMemory();
     protected static final Scanner sc = new Scanner(System.in);
 
     public EmployeeShowInConsoleManager(int option) {
@@ -27,7 +29,7 @@ public class EmployeeShowInConsoleManager {
     public void view(List<Employee> employees) {
         Utilities.clearScreen();
 
-        if (EmployeeManagerInFile.employees.size() > 0) {
+        if (EmployeeManager.employees.size() > 0) {
             System.out.println("EMPLOYEE LIST: \n");
         } else {
             System.out.println("NO EMPLOYEES FOUND!");
@@ -165,12 +167,12 @@ public class EmployeeShowInConsoleManager {
             System.out.println("INSERTING NEW EMPLOYEE...");
 
             System.out.print("Enter name: ");
-            String name = EmployeeManagerInFile.sc.nextLine();
+            String name = sc.nextLine();
             name = name.trim();
             name = (name.length() > 0) ? Utilities.firstLetterUpperCase(name) : "";
 
             System.out.print("Enter surname: ");
-            String surname = EmployeeManagerInFile.sc.nextLine();
+            String surname = sc.nextLine();
             surname = surname.trim();
             surname = (surname.length() > 0) ? Utilities.firstLetterUpperCase(surname) : "";
 
@@ -190,23 +192,26 @@ public class EmployeeShowInConsoleManager {
             Utilities.clearScreen();
 
             System.out.println("INSERTED NEW EMPLOYEE:");
-            int i = EmployeeManagerInFile.employees.size() - 1;
-            System.out.println("\tid: " + EmployeeManagerInFile.employees.get(i).getId());
-            System.out.println("\tname: " + EmployeeManagerInFile.employees.get(i).getName());
-            System.out.println("\tsurname: " + EmployeeManagerInFile.employees.get(i).getSurname());
-            System.out.println("\tbirthdate: " + EmployeeManagerInFile.employees.get(i).getBirthDateFormatted());
-            System.out.println("\tidnp: " + EmployeeManagerInFile.employees.get(i).getIdnp());
-            System.out.println("\tsalary: $" + EmployeeManagerInFile.employees.get(i).getSalary());
-            System.out.println("\tjob: " + Utilities.firstLetterUpperCase(EmployeeManagerInFile.employees.get(i).getJob().toString()));
+            int i = EmployeeManager.employees.size() - 1;
+            System.out.println("\tid: " + EmployeeManager.employees.get(i).getId());
+            System.out.println("\tname: " + EmployeeManager.employees.get(i).getName());
+            System.out.println("\tsurname: " + EmployeeManager.employees.get(i).getSurname());
+            System.out.println("\tbirthdate: " + EmployeeManager.employees.get(i).getBirthDateFormatted());
+            System.out.println("\tidnp: " + EmployeeManager.employees.get(i).getIdnp());
+            System.out.println("\tsalary: $" + EmployeeManager.employees.get(i).getSalary());
+            System.out.println("\tjob: " + Utilities.firstLetterUpperCase(EmployeeManager.employees.get(i).getJob().toString()));
 
             System.out.println("Enter 1 to add more, or any value to go back...");
-            moreEmployees = EmployeeManagerInFile.sc.nextLine();
+            moreEmployees = sc.nextLine();
             moreEmployees = moreEmployees.trim();
         } while (moreEmployees.equals("1"));
 
     }
 
     public void delete() {
+        // less problems without conflictin with sc, when working with numbers
+        Scanner scanner = new Scanner(System.in);
+        
         //submenu
         int nav = -1;
         do {
@@ -222,12 +227,12 @@ public class EmployeeShowInConsoleManager {
 
             System.out.print("\nenter submenu number: ");
             try {
-                nav = EmployeeManagerInFile.sc.nextInt();
+                nav = scanner.nextInt();
             } catch (Exception e) {
                 System.out.println("\nInvalid format, try again (ex: 1)");
                 Utilities.enterAnyValueToContinue();
             } finally {
-                EmployeeManagerInFile.sc.nextLine();
+                scanner.nextLine();
             }
 
             switch (nav) {
@@ -253,36 +258,39 @@ public class EmployeeShowInConsoleManager {
     }
 
     public Employee updateStatement(int employeeIndex) {
-        System.out.println("Editing employee " + EmployeeManagerInFile.employees.get(employeeIndex).getName()
-                + " " + EmployeeManagerInFile.employees.get(employeeIndex).getSurname() + " (id: "
-                + EmployeeManagerInFile.employees.get(employeeIndex).getId() + " / idnp: "
-                + EmployeeManagerInFile.employees.get(employeeIndex).getIdnp() + ")...");
-        System.out.print("name: " + EmployeeManagerInFile.employees.get(employeeIndex).getName() + " -> ");
+        System.out.println("Editing employee " + EmployeeManager.employees.get(employeeIndex).getName()
+                + " " + EmployeeManager.employees.get(employeeIndex).getSurname() + " (id: "
+                + EmployeeManager.employees.get(employeeIndex).getId() + " / idnp: "
+                + EmployeeManager.employees.get(employeeIndex).getIdnp() + ")...");
+        System.out.print("name: " + EmployeeManager.employees.get(employeeIndex).getName() + " -> ");
         String name = EmployeeDataChecker.enterValidString();
         name = name.trim();
         name = Utilities.firstLetterUpperCase(name);
 
-        System.out.print("surname: " + EmployeeManagerInFile.employees.get(employeeIndex).getSurname() + " -> ");
+        System.out.print("surname: " + EmployeeManager.employees.get(employeeIndex).getSurname() + " -> ");
         String surname = EmployeeDataChecker.enterValidString();
         surname = surname.trim();
         surname = Utilities.firstLetterUpperCase(surname);
 
-        System.out.print("birth date: " + EmployeeManagerInFile.employees.get(employeeIndex).getBirthDateFormatted() + " -> ");
+        System.out.print("birth date: " + EmployeeManager.employees.get(employeeIndex).getBirthDateFormatted() + " -> ");
         LocalDate birthDate = EmployeeDataChecker.enterBirthDate();
 
-        System.out.print("idnp: " + EmployeeManagerInFile.employees.get(employeeIndex).getIdnp() + " -> ");
-        String idnp = EmployeeDataChecker.enterIdnp(EmployeeManagerInFile.employees.get(employeeIndex).getIdnp());
+        System.out.print("idnp: " + EmployeeManager.employees.get(employeeIndex).getIdnp() + " -> ");
+        String idnp = EmployeeDataChecker.enterIdnp(EmployeeManager.employees.get(employeeIndex).getIdnp());
 
-        System.out.print("salary: " + EmployeeManagerInFile.employees.get(employeeIndex).getSalary() + " -> ");
+        System.out.print("salary: " + EmployeeManager.employees.get(employeeIndex).getSalary() + " -> ");
         double salary = EmployeeDataChecker.enterSalary();
 
-        System.out.print("job: " + Utilities.firstLetterUpperCase(EmployeeManagerInFile.employees.get(employeeIndex).getJob().toString()) + " -> ");
+        System.out.print("job: " + Utilities.firstLetterUpperCase(EmployeeManager.employees.get(employeeIndex).getJob().toString()) + " -> ");
         Job job = EmployeeDataChecker.enterJob();
 
         return new Employee(name, surname, idnp, birthDate, salary, job, false);
     }
 
     public void update() {
+        // less problems without conflictin with sc, when working with numbers
+        Scanner scanner = new Scanner(System.in);
+        
         //submenu
         int nav = -1;
         do {
@@ -298,12 +306,12 @@ public class EmployeeShowInConsoleManager {
 
             System.out.print("\nenter submenu number: ");
             try {
-                nav = EmployeeManagerInFile.sc.nextInt();
+                nav = scanner.nextInt();
             } catch (Exception e) {
                 System.out.println("\nInvalid format, try again (ex: 1)");
                 Utilities.enterAnyValueToContinue();
             } finally {
-                EmployeeManagerInFile.sc.nextLine();
+                scanner.nextLine();
             }
 
             switch (nav) {
@@ -422,7 +430,7 @@ public class EmployeeShowInConsoleManager {
 
         int employeeIndex = em.findByIdnp(idnp);
         if(employeeIndex >= 0) {
-            Employee employeeToDelete = EmployeeManagerInFile.employees.get(employeeIndex);
+            Employee employeeToDelete = EmployeeManager.employees.get(employeeIndex);
 
             if (em.delete(employeeIndex)) {
                 deleteMessage(employeeToDelete);
@@ -457,7 +465,7 @@ public class EmployeeShowInConsoleManager {
 
         int employeeIndex = em.findById(id);
         if(employeeIndex >= 0) {
-            Employee employeeToDelete = EmployeeManagerInFile.employees.get(employeeIndex);
+            Employee employeeToDelete = EmployeeManager.employees.get(employeeIndex);
 
             if (em.delete(employeeIndex)) {
                 deleteMessage(employeeToDelete);
@@ -481,7 +489,7 @@ public class EmployeeShowInConsoleManager {
 
         int employeeIndex = em.findByNameAndSurname(name, surname);
         if(employeeIndex >= 0) {
-            Employee employeeToDelete = EmployeeManagerInFile.employees.get(employeeIndex);
+            Employee employeeToDelete = EmployeeManager.employees.get(employeeIndex);
 
             if (em.delete(employeeIndex)) {
                 deleteMessage(employeeToDelete);

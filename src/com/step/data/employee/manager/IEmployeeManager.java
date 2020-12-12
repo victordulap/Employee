@@ -2,10 +2,14 @@ package com.step.data.employee.manager;
 
 import com.step.data.employee.Employee;
 
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 //nu afisam nimic prin aceste functii, doar lucram cu datele
 public interface IEmployeeManager {
+    public static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+
     void insert(Employee e);
 
     int findByIdnp(String idnp);

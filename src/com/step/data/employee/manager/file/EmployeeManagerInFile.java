@@ -1,15 +1,40 @@
-package com.step.data.employee.manager;
+package com.step.data.employee.manager.file;
 
 import com.step.data.employee.Employee;
+import com.step.data.employee.manager.EmployeeManager;
+import com.step.data.employee.manager.IEmployeeManager;
 
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-public class EmployeeManagerInMemory implements IEmployeeManager {
-    protected static final Scanner sc = new Scanner(System.in);
-    public static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+public class EmployeeManagerInFile extends EmployeeManager implements IEmployeeManager {
+    //data
+    /*public static void exportCSV() {
+        EmployeeFileDataReader.exportToCSVFile();
 
-    public static List<Employee> employees = new ArrayList<>();
+        System.out.println("Exported successfully!");
+        Utilities.enterAnyValueToContinue();
+    }*/
+
+    /*public static void importCSV() {
+        EmployeeFileDataReader.importFromCSVFile();
+
+        System.out.println("Imported successfully!");
+        Utilities.enterAnyValueToContinue();
+    }*/
+
+    private void exportSerialized() {
+        EmployeeFileDataReader.exportToSerializedFile(employees);
+        Employee.saveLastIdToFile();
+    }
+
+    private void importSerialized() {
+        employees.clear();
+        employees = EmployeeFileDataReader.importFromSerializedFile();
+        Employee.readLastIdFromFile();
+    }
+
+    // 3way modified:
 
     /**
      * @return  index in list: <br>
@@ -106,12 +131,12 @@ public class EmployeeManagerInMemory implements IEmployeeManager {
 
     @Override
     public void onCloseApp() {
-        // no code cuz no writing to external sources
+        this.exportSerialized();
     }
 
     @Override
     public void onOpenApp() {
-        // no code cuz no reading from external sources
+        this.importSerialized();
     }
 
     /**

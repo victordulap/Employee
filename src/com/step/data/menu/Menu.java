@@ -1,6 +1,6 @@
 package com.step.data.menu;
 
-import com.step.data.employee.manager.EmployeeManagerInFile;
+import com.step.data.employee.manager.file.EmployeeManagerInFile;
 import com.step.data.employee.manager.EmployeeShowInConsoleManager;
 
 import java.util.Scanner;
@@ -10,7 +10,6 @@ public class Menu{
     private static EmployeeShowInConsoleManager em;
     private static int option;
 
-    public Menu(int i){}
     public Menu() {
         Scanner scanner = new Scanner(System.in);
 
@@ -58,7 +57,6 @@ public class Menu{
             Utilities.clearScreen();
         } while (nav < 0 || nav > 3);
 
-        option = nav;
         em = new EmployeeShowInConsoleManager(nav);
     }
 
