@@ -496,4 +496,9 @@ public class EmployeeShowInConsoleManager {
 
         Utilities.enterAnyValueToContinue();
     }
+
+    public void close() {
+        System.out.println("Closing application...");
+        em.close();
+    }
 }

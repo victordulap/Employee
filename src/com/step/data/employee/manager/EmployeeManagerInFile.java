@@ -129,6 +129,11 @@ public class EmployeeManagerInFile implements IEmployeeManager {
         }
     }
 
+    @Override
+    public void close() {
+        EmployeeFileDataReader.exportToSerializedFile();
+    }
+
     /**
      * @param employeeIndex the index of employee to delete <br>
      * @param newEmployee the data of employee, to replace the old one

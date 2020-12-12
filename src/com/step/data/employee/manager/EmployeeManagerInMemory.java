@@ -104,6 +104,11 @@ public class EmployeeManagerInMemory implements IEmployeeManager {
         }
     }
 
+    @Override
+    public void close() {
+
+    }
+
     /**
      * @param employeeIndex the index of employee to delete <br>
      * @param newEmployee the data of employee, to replace the old one

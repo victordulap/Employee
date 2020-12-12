@@ -20,7 +20,7 @@ public interface IEmployeeManager {
 
     boolean delete(int employeeIndex); // done
 
+    void close();
 //    public List<Employee> read();
 
-//    public void close();
 }

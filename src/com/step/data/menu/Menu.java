@@ -11,6 +11,7 @@ public class Menu{
     private static EmployeeShowInConsoleManager em;
     private static int option;
 
+    public Menu(int i){}
     public Menu() {
         Scanner scanner = new Scanner(System.in);
 
@@ -110,26 +111,10 @@ public class Menu{
                 case 4:
                     em.delete();
                     break;
-//                case 5:
-//                    fileMenu();
-//                    break;
                 case 0:
                     Utilities.clearScreen();
-
-//                    System.out.print("Type yes or 1 to save data: ");
-//                    String str = sc.nextLine();
-//                    boolean toSaveInCSV = str.equalsIgnoreCase("yes") || str.equalsIgnoreCase("1");
-//
-//                    if(toSaveInCSV) {
-//                        System.out.println("SAVING DATA");
-//                        EmployeeManager.exportCSV();
-//                    }
-                    if(option == 2) {
-                        EmployeeManagerInFile.exportSerialized();
-                        Employee.saveLastIdToFile();
-                    }
-
-                    System.out.println("Application exited");
+                    em.close();
+                    System.out.println("Application closed!");
                     System.exit(0);
                     break;
 
