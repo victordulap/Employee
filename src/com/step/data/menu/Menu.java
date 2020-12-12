@@ -1,6 +1,5 @@
 package com.step.data.menu;
 
-import com.step.data.employee.Employee;
 import com.step.data.employee.manager.EmployeeManagerInFile;
 import com.step.data.employee.manager.EmployeeShowInConsoleManager;
 
@@ -66,13 +65,7 @@ public class Menu{
     public void showMenu() {
         int nav = -1;
 
-        if(option == 2) {
-            System.out.println("LOADING DATA...");
-//        EmployeeDataManager.importCSV();
-            EmployeeManagerInFile.importSerialized();
-            Employee.readLastIdFromFile();
-            System.out.println("DONE!");
-        }
+        em.onOpenApp();
 
         Utilities.clearScreen();
 
@@ -113,7 +106,7 @@ public class Menu{
                     break;
                 case 0:
                     Utilities.clearScreen();
-                    em.close();
+                    em.onCloseApp();
                     System.out.println("Application closed!");
                     System.exit(0);
                     break;

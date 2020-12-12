@@ -105,8 +105,13 @@ public class EmployeeManagerInMemory implements IEmployeeManager {
     }
 
     @Override
-    public void close() {
+    public void onCloseApp() {
+        // no code cuz no writing to external sources
+    }
 
+    @Override
+    public void onOpenApp() {
+        // no code cuz no reading from external sources
     }
 
     /**

@@ -497,8 +497,13 @@ public class EmployeeShowInConsoleManager {
         Utilities.enterAnyValueToContinue();
     }
 
-    public void close() {
+    public void onCloseApp() {
         System.out.println("Closing application...");
-        em.close();
+        em.onCloseApp();
+    }
+
+    public void onOpenApp() {
+        System.out.println("Opening application...");
+        em.onOpenApp();
     }
 }

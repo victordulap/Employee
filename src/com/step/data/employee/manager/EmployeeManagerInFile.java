@@ -26,12 +26,15 @@ public class EmployeeManagerInFile implements IEmployeeManager {
         Utilities.enterAnyValueToContinue();
     }*/
 
-    public static void exportSerialized() {
-        EmployeeFileDataReader.exportToSerializedFile();
+    private void exportSerialized() {
+        EmployeeFileDataReader.exportToSerializedFile(employees);
+        Employee.saveLastIdToFile();
     }
 
-    public static void importSerialized() {
-        EmployeeFileDataReader.importFromSerializedFile();
+    private void importSerialized() {
+        employees.clear();
+        employees = EmployeeFileDataReader.importFromSerializedFile();
+        Employee.readLastIdFromFile();
     }
 
     // 3way modified:
@@ -130,8 +133,13 @@ public class EmployeeManagerInFile implements IEmployeeManager {
     }
 
     @Override
-    public void close() {
-        EmployeeFileDataReader.exportToSerializedFile();
+    public void onCloseApp() {
+        this.exportSerialized();
+    }
+
+    @Override
+    public void onOpenApp() {
+        this.importSerialized();
     }
 
     /**

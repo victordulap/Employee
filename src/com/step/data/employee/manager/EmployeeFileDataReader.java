@@ -4,6 +4,8 @@ import com.step.data.employee.Employee;
 import com.step.data.menu.Utilities;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EmployeeFileDataReader {
     //csv
@@ -86,14 +88,16 @@ public class EmployeeFileDataReader {
     //end csv
 
     //serializing
-    public static void importFromSerializedFile() {
+    public static List<Employee> importFromSerializedFile() {
+        List<Employee> importedEmployees = new ArrayList<>();
+
         try {
             String path = ".\\data\\employees.dat"; // works
             File file = new File(path);
             if (!file.exists()) {
                 try {
                     boolean fileCreatedSuccessfully = file.createNewFile();
-                    return;
+                    return importedEmployees;
                 } catch (IOException e) {
                     System.out.println("Undetected error on file creating process.");
                 }
@@ -102,7 +106,6 @@ public class EmployeeFileDataReader {
             FileInputStream fileInputStream = new FileInputStream(file);
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
 
-            EmployeeManagerInFile.employees.clear();
             while (true) {
                 try {
                     Object o = objectInputStream.readObject();
@@ -110,7 +113,7 @@ public class EmployeeFileDataReader {
                         break;
                     }
 
-                    EmployeeManagerInFile.employees.add((Employee) o);
+                    importedEmployees.add((Employee) o);
                 } catch (Exception e) {
                     // eof
                     break;
@@ -119,20 +122,20 @@ public class EmployeeFileDataReader {
 
             objectInputStream.close();
             fileInputStream.close();
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+        return importedEmployees;
     }
 
-    public static void exportToSerializedFile() {
+    public static void exportToSerializedFile(List<Employee> employeesToExport) {
         try {
             String path = ".\\data\\employees.dat"; // works
             File file = new File(path);
             if (!file.exists()) {
                 try {
                     boolean fileCreatedSuccessfully = file.createNewFile();
-                    System.out.println("There was no file before, so a new file was created.");
-                    Utilities.enterAnyValueToContinue();
                 } catch (IOException e) {
                     System.out.println("Undetected error on file creating process.");
                     return;
@@ -142,7 +145,7 @@ public class EmployeeFileDataReader {
             FileOutputStream fileOutputStream = new FileOutputStream(file);
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
 
-            for (Employee employee : EmployeeManagerInFile.employees) {
+            for (Employee employee : employeesToExport) {
                 objectOutputStream.writeObject(employee);
             }
 
