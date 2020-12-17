@@ -33,6 +33,29 @@ public class EmployeeDAO {
             statement.setString(4, String.valueOf(e.getBirthDate()));
             statement.setDouble(5, e.getSalary());
             statement.setString(6, String.valueOf(e.getJob()));
+
+            // execute statement
+            statement.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+    public void update(Employee e, int id) {
+        String sql = " UPDATE " + dbTable +
+                " SET name=?, surname=?, idnp=?, birthdate=?, salary=?, job=?  WHERE id=? ";
+
+        try (Connection connection = initConnection();
+             PreparedStatement statement = connection.prepareStatement(sql);) {
+            // set ?s
+            statement.setString(1, e.getName());
+            statement.setString(2, e.getSurname());
+            statement.setString(3, String.valueOf(e.getIdnp()));
+            statement.setString(4, String.valueOf(e.getBirthDate()));
+            statement.setDouble(5, e.getSalary());
+            statement.setString(6, String.valueOf(e.getJob()));
+            statement.setString(7, String.valueOf(id));
+
             // execute statement
             statement.executeUpdate();
         } catch (SQLException throwables) {

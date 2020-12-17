@@ -33,7 +33,7 @@ public class EmployeeShowInConsoleManager {
     public void view(List<Employee> employees) {
         Utilities.clearScreen();
 
-        if (EmployeeManager.employees.size() > 0) {
+        if (employees.size() > 0) {
             System.out.println("EMPLOYEE LIST: \n");
         } else {
             System.out.println("NO EMPLOYEES FOUND!");
@@ -191,19 +191,19 @@ public class EmployeeShowInConsoleManager {
             System.out.print("Enter job: ");
             Job job = EmployeeDataChecker.enterJob();
 
-            em.insert(new Employee(name, surname, idnp, birthDate, salary, job));
+            Employee employeeToInsert = new Employee(name, surname, idnp, birthDate, salary, job);
+            em.insert(employeeToInsert);
 
             Utilities.clearScreen();
 
             System.out.println("INSERTED NEW EMPLOYEE:");
-            int i = EmployeeManager.employees.size() - 1;
-            System.out.println("\tid: " + EmployeeManager.employees.get(i).getId());
-            System.out.println("\tname: " + EmployeeManager.employees.get(i).getName());
-            System.out.println("\tsurname: " + EmployeeManager.employees.get(i).getSurname());
-            System.out.println("\tbirthdate: " + EmployeeManager.employees.get(i).getBirthDateFormatted());
-            System.out.println("\tidnp: " + EmployeeManager.employees.get(i).getIdnp());
-            System.out.println("\tsalary: $" + EmployeeManager.employees.get(i).getSalary());
-            System.out.println("\tjob: " + Utilities.firstLetterUpperCase(EmployeeManager.employees.get(i).getJob().toString()));
+            System.out.println("\tid: " + employeeToInsert.getId());
+            System.out.println("\tname: " + employeeToInsert.getName());
+            System.out.println("\tsurname: " + employeeToInsert.getSurname());
+            System.out.println("\tbirthdate: " + employeeToInsert.getBirthDateFormatted());
+            System.out.println("\tidnp: " + employeeToInsert.getIdnp());
+            System.out.println("\tsalary: $" + employeeToInsert.getSalary());
+            System.out.println("\tjob: " + Utilities.firstLetterUpperCase(employeeToInsert.getJob().toString()));
 
             System.out.println("Enter 1 to add more, or any value to go back...");
             moreEmployees = sc.nextLine();
@@ -213,7 +213,7 @@ public class EmployeeShowInConsoleManager {
     }
 
     public void delete() {
-        // less problems without conflictin with sc, when working with numbers
+        // less problems without conflicting with sc, when working with numbers
         Scanner scanner = new Scanner(System.in);
         
         //submenu

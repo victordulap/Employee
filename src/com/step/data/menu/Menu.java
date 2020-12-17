@@ -145,6 +145,7 @@ public class Menu{
 
             switch (nav) {
                 case 1:
+                    // todo change EmployeeManagerInFile
                     em.view(EmployeeManagerInFile.employees);
                     break;
                 case 2:

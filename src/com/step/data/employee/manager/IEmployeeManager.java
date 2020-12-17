@@ -27,4 +27,6 @@ public interface IEmployeeManager {
     void onCloseApp();
 
     void onOpenApp();
+
+    // potential fix problem with DB, add a function that returns a arrayList of employees
 }
